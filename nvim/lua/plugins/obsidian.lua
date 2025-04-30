@@ -21,7 +21,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "/Volumes/MainDataDrive/My_Notes",
+        path = "~/Documents/My_Notes",
       },
     },
 
