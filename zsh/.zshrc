@@ -18,6 +18,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # My Alias 
 alias vim=nvim
 alias create_project="/Users/yimingpeng/Documents/02\ -\ Areas/My_App/automation/workflow/create_project.sh"
+alias ls=eza
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
