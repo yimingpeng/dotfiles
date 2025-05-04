@@ -17,7 +17,7 @@ config = {
 	background = {
 		{
 			source = {
-				File = "~/Pictures/bg-monterey.jpg",
+				File = "$HOME/Pictures/bg-monterey.jpg",
 			},
 			hsb = {
 				hue = 1.0,

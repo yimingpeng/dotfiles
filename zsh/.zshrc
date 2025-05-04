@@ -17,7 +17,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # My Alias 
 alias vim=nvim
-alias create_project="/Users/yimingpeng/Documents/02\ -\ Areas/My_App/automation/workflow/create_project.sh"
+alias create_project="/usr/bin/create_project.sh"
 alias ls=eza
 alias cd=z
 

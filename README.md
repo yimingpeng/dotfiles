@@ -6,6 +6,7 @@ The repo contains all my dotfiles
 - `nvim`: This folder contains all the configs for my `nvim`
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is suitable for my filco 68 keyboard
 - `starship.toml`: This is for configuring the look-and-feel for the `wezterm` 
+- `vscode`: This folder includes all the configs for my `vscode`
 
 # Other tools/packages installed with brew 
 - Zsh syntax highlighting: `brew install zsh-syntax-highlighting`
