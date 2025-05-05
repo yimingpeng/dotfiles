@@ -37,11 +37,18 @@ config = {
 		},
 	},
 	window_padding = {
-		left = 3,
-		right = 3,
+		left = 1,
+		right = 1,
 		top = 0,
 		bottom = 0,
 	},
 }
+
+local mux = wezterm.mux
+
+wezterm.on("gui-startup", function()
+	local tab, pane, window = mux.spawn_window({})
+	window:gui_window():maximize()
+end)
 
 return config
