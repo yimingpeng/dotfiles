@@ -86,3 +86,5 @@ out/
 *.temp
 *.bak
 *.backup
+
+lazy-lock.json
