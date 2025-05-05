@@ -87,4 +87,4 @@ out/
 *.bak
 *.backup
 
-lazy-lock.json
+nvim/lazy-lock.json
