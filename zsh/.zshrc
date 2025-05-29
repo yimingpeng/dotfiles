@@ -36,3 +36,21 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+
+# Added by Windsurf
+export PATH="/Users/yimingpeng/.codeium/windsurf/bin:$PATH"
+
+# Add to your .zshrc file
+echo 'export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"' >> ~/.zshrc
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
