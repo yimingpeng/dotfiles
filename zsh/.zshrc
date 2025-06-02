@@ -17,7 +17,7 @@ source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # My Alias 
 alias vim=nvim
-alias create_project="/usr/bin/create_project.sh"
+alias create_project="/usr/local/bin/create_project.sh"
 alias ls=eza
 alias cd=z
 
@@ -36,10 +36,9 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-
-# Added by Windsurf
-export PATH="/Users/yimingpeng/.codeium/windsurf/bin:$PATH"
-
 # Add to your .zshrc file
 echo 'export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"' >> ~/.zshrc
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
