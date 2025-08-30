@@ -39,6 +39,4 @@ unset __conda_setup
 # Add to your .zshrc file
 echo 'export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"' >> ~/.zshrc
 export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+
