@@ -36,7 +36,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-# Add to your .zshrc file
-echo 'export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"' >> ~/.zshrc
-export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
-
+# Add Docker Desktop to PATH if not already present
+if [[ ":$PATH:" != *":/Applications/Docker.app/Contents/Resources/bin:"* ]]; then
+    export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+fi
