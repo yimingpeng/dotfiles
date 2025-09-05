@@ -1,3 +1,8 @@
+# Resolving the issue of "complete:13: command not found: compdef"
+# https://stackoverflow.com/questions/66338988/complete13-command-not-found-compdef
+autoload -Uz compinit
+compinit
+
 # Starship
 eval "$(starship init zsh)"
 
@@ -40,3 +45,7 @@ unset __conda_setup
 if [[ ":$PATH:" != *":/Applications/Docker.app/Contents/Resources/bin:"* ]]; then
     export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
 fi
+. "$HOME/.local/bin/env"
+# START: Added by Updated Airflow Breeze autocomplete setup
+source "/Users/yimingpeng/pCloud/02 - Areas/My_Work/open-source/airflow/dev/breeze/autocomplete/breeze-complete-zsh.sh"
+# END: Added by Updated Airflow Breeze autocomplete setup
