@@ -46,6 +46,3 @@ if [[ ":$PATH:" != *":/Applications/Docker.app/Contents/Resources/bin:"* ]]; the
     export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
 fi
 . "$HOME/.local/bin/env"
-# START: Added by Updated Airflow Breeze autocomplete setup
-source "/Users/yimingpeng/pCloud/02 - Areas/My_Work/open-source/airflow/dev/breeze/autocomplete/breeze-complete-zsh.sh"
-# END: Added by Updated Airflow Breeze autocomplete setup
