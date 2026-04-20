@@ -2,7 +2,7 @@ format = """
 [](#9A348E)\
 $username$hostname\
 [](bg:#DA627D fg:#9A348E)\
-$directory\
+${custom.smart_directory}\
 [](fg:#DA627D bg:#FCA17D)\
 $git_branch\
 $git_status\
@@ -50,6 +50,59 @@ style = "bg:#DA627D"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
+
+[custom.smart_directory]
+description = "Shorten long directory names by default"
+shell = ["bash", "--noprofile", "--norc", "-c"]
+use_stdin = false
+when = "true"
+style = "bg:#DA627D"
+format = "[ $output ]($style)"
+command = '''
+path="${PWD/#$HOME/~}"
+IFS='/' read -r -a parts <<< "$path"
+count="${#parts[@]}"
+start=0
+prefix=""
+
+if (( count > 3 )); then
+	start=$((count - 3))
+	prefix="…/"
+fi
+
+out=""
+for ((i=start; i<count; i++)); do
+	seg="${parts[i]}"
+
+	if [[ -z "$seg" ]]; then
+		continue
+	fi
+
+	if (( ${#seg} > 30 )); then
+		# For names like "date - topic - details", keep only the first two parts.
+		if [[ "$seg" == *" - "* ]]; then
+			first="${seg%% - *}"
+			rest="${seg#* - }"
+			second="${rest%% - *}"
+
+			if [[ -n "$first" && -n "$second" && "$first" != "$seg" ]]; then
+				seg="$first - $second"
+			fi
+		fi
+
+		if (( ${#seg} > 30 )); then
+			seg="${seg:0:27}…"
+		fi
+	fi
+
+	if [[ -n "$out" ]]; then
+		out+="/"
+	fi
+	out+="$seg"
+done
+
+printf "%s%s\n" "$prefix" "$out"
+'''
 
 # Here is how you can shorten some long paths by text replacement
 # similar to mapped_locations in Oh My Posh:
