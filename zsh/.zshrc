@@ -46,3 +46,7 @@ if [[ ":$PATH:" != *":/Applications/Docker.app/Contents/Resources/bin:"* ]]; the
     export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
 fi
 . "$HOME/.local/bin/env"
+
+
+# Added by Antigravity
+export PATH="/Users/yimingpeng/.antigravity/antigravity/bin:$PATH"
