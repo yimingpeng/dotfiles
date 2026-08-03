@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1785723590629,
+  "projectRoot": "/Users/yimingpeng/pCloud/02 - Areas/dotfiles",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "iterm2": {
+      "path": "iterm2",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1785723590597,
+      "keyFiles": [
+        "Default.json"
+      ]
+    },
+    "karabiner": {
+      "path": "karabiner",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1785723590598,
+      "keyFiles": [
+        "karabiner.json"
+      ]
+    },
+    "nvim": {
+      "path": "nvim",
+      "purpose": null,
+      "fileCount": 8,
+      "lastAccessed": 1785723590598,
+      "keyFiles": [
+        "LICENSE",
+        "README.md",
+        "init.lua",
+        "lazy-lock.json",
+        "lazyvim.json"
+      ]
+    },
+    "vscode": {
+      "path": "vscode",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1785723590599,
+      "keyFiles": [
+        "keybindings.json",
+        "settings.json"
+      ]
+    },
+    "wezterm": {
+      "path": "wezterm",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1785723590599,
+      "keyFiles": [
+        "wezterm.lua"
+      ]
+    },
+    "zsh": {
+      "path": "zsh",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1785723590600,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "zsh/.zshrc",
+      "accessCount": 3,
+      "lastAccessed": 1785723701054,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

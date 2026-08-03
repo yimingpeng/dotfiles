@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"ls -la ~/.zprofile ~/.zshenv ~/.zlogin ~/.zlogout 2>&1; echo \\\"=== zprofile ===\\\"; cat ~/.zprofile 2>/dev/null; echo \\\"=== zshenv ===\\\"; cat ~/.zshenv 2>/dev/null\",\"description\":\"List othe...",
+  "error": "Exit code 1\n\"/Users/yimingpeng/.zshenv\": No such file or directory (os error 2)\n\"/Users/yimingpeng/.zlogin\": No such file or directory (os error 2)\n\"/Users/yimingpeng/.zlogout\": No such file or directory (os error 2)\n.rw-r--r--@ 244 yimingpeng 17 Mar 06:37 /Users/yimingpeng/.zprofile\n=== zprofile ===\n\n\n# Added by Toolbox App\nexport PATH=\"$PATH:/Users/yimingpeng/Library/Application Support/JetBrains/Toolbox/scripts\"\n\n\neval \"$(/opt/homebrew/bin/brew shellenv)\"\n\n# Added by Obsidian\nexport PATH=\"$PA...",
+  "timestamp": "2026-08-03T02:22:55.720Z",
+  "retry_count": 1
+}
