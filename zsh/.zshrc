@@ -3,6 +3,11 @@
 autoload -Uz compinit
 compinit
 
+# Silence zoxide's config-issue warning. Non-interactive shells (e.g. Claude Code's
+# snapshot shell) restore functions/aliases but not zsh hook arrays, so zoxide sees
+# __zoxide_hook missing from chpwd_functions and warns on every `z`/`cd`.
+export _ZO_DOCTOR=0
+
 # Starship
 eval "$(starship init zsh)"
 
