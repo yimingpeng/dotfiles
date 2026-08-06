@@ -50,12 +50,6 @@ fi
 . "$HOME/.local/bin/env"
 
 
-# Added by Antigravity
-export PATH="/Users/yimingpeng/.antigravity/antigravity/bin:$PATH"
-
-# Added by Antigravity IDE
-export PATH="/Users/yimingpeng/.antigravity-ide/antigravity-ide/bin:$PATH"
-
 # opencode
 export PATH=/Users/yimingpeng/.opencode/bin:$PATH
 

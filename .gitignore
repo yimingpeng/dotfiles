@@ -88,3 +88,4 @@ out/
 *.backup
 
 nvim/lazy-lock.json
+.omc/
