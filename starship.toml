@@ -12,8 +12,8 @@ $nodejs\
 $rust\
 $scala\
 [](fg:#86BBD8 bg:#06969A)\
-$character
 $line_break\
+$character
 """
 
 # Disable the blank line at the start of the prompt
