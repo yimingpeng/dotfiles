@@ -42,8 +42,13 @@
     onActivation.cleanup = "zap";   # remove anything not listed here 
     onActivation.autoUpdate = true; # auto-update
     onActivation.extraFlags = [ "--force" ];
+    brews = [
+      "zoxide"
+      "herdr"
+    ];
     casks = [
       "wezterm"
+      "claude-code"
     ];
   };
 }

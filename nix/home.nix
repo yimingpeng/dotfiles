@@ -45,6 +45,14 @@ in
     enable = true;
   };
 
+  programs.git = {
+    enable = true;
+    settings.user = {
+      name = "Yiming Peng";
+      email = "yimingpengjojo@gmail.com";
+    };
+  };
+
   home.file.".config/wezterm".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/wezterm";
 
@@ -53,5 +61,8 @@ in
 
   home.file.".config/nvim".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
+
+  home.file.".config/herdr".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/herdr";
 }
 

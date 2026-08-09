@@ -21,12 +21,12 @@
       modules = [ 
         ./configuration.nix
         nix-homebrew.darwinModules.nix-homebrew
-	home-manager.darwinModules.home-manager
-	{
-	    home-manager.useGlobalPkgs = true;
-	    home-manager.useUserPackages = true;
-	    home-manager.users.yimingpeng = import ./home.nix;
-	}
+        home-manager.darwinModules.home-manager
+        {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.yimingpeng = import ./home.nix;
+        }
       ];
     };
   };
