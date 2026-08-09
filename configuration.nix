@@ -8,7 +8,7 @@
   nixpkgs.hostPlatform = "aarch64-darwin"; # use x86-64-darwin for Intel CPU
   
   # Define the main user, get from `id` command
-  system.primaryUser = 'yimingpeng';
+  system.primaryUser = "yimingpeng";
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
