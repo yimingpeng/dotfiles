@@ -64,5 +64,8 @@ in
 
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/herdr";
+
+  home.file.".claude/settings.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/settings.json";
 }
 
