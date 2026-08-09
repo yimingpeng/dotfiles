@@ -7,11 +7,17 @@
     # Use `github:nix-darwin/nix-darwin/nix-darwin-26.05` to use Nixpkgs 26.05.
     nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Add the home brew url 
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }: {
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew }: {
     darwinConfigurations."Yiming-macbook-m1-pro" = nix-darwin.lib.darwinSystem {
-      modules = [ ./configuration.nix ];
+      modules = [ 
+        ./configuration.nix
+        nix-homebrew.darwinModules.nix-homebrew
+      ];
     };
   };
 }
