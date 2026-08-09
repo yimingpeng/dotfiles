@@ -10,13 +10,23 @@
 
     # Add the home brew url 
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
+
+    # Add the home manager to manage the home directory 
+    home-manager.url = "github:nix-community/home-manager/release-26.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew }: {
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, home-manager }: {
     darwinConfigurations."Yiming-macbook-m1-pro" = nix-darwin.lib.darwinSystem {
       modules = [ 
         ./configuration.nix
         nix-homebrew.darwinModules.nix-homebrew
+	home-manager.darwinModules.home-manager
+	{
+	    home-manager.useGlobalPkgs = true;
+	    home-manager.useUserPackages = true;
+	    home-manager.users.yimingpeng = import ./home.nix;
+	}
       ];
     };
   };

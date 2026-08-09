@@ -9,6 +9,9 @@
   
   # Define the main user, get from `id` command
   system.primaryUser = "yimingpeng";
+  users.users.yimingpeng = {
+    home = "/Users/yimingpeng";
+  };
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
@@ -42,5 +45,5 @@
     casks = [
       "wezterm"
     ];
-  }
+  };
 }
