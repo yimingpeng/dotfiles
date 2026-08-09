@@ -12,7 +12,8 @@ config.show_new_tab_button_in_tab_bar = false
 config.window_close_confirmation = "NeverPrompt"
 config.window_decorations = "RESIZE" -- disable the title bar but enable the resisable border
 config.default_cursor_style = "BlinkingBar"
-config.color_scheme = "Catppuccin Mocha (Gogh)"
+config.color_scheme = "rose-pine-moon"
+-- config.color_scheme = "Catppuccin Mocha (Gogh)"
 config.font = wezterm.font("Hack Nerd Font", { weight = "Bold" })
 config.font_size = 18
 config.background = {

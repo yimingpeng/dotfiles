@@ -53,6 +53,17 @@ in
     };
   };
 
+  programs.zoxide = {
+    enable = true;
+    # Replaces the default 'cd' command completely with zoxide
+    options = [ "--cmd cd" ];
+    
+    # integration to different shells
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
+  };
+
   home.file.".config/wezterm".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/wezterm";
 

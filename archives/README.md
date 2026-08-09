@@ -1,0 +1,1 @@
+This folder contains some legacy settings that probably will be dropped in the future. Because I've changed my workflow regularly, some tools or configurations may not be available or used anymore. The reason I didn't delete them, only because I still reference some of them in other places (workplace).
