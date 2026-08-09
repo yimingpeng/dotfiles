@@ -34,7 +34,7 @@ config.background = {
 		},
 		width = "100%",
 		height = "100%",
-		opacity = 0.88,
+		opacity = 0.96,
 	},
 }
 config.window_padding = {
