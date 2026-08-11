@@ -17,6 +17,11 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 6;
 
+  # Required so that /etc/zshrc & /etc/zprofile source
+  # /etc/profiles/per-user/$USER/etc/profile.d/*.sh (incl. home-manager's
+  # hm-session-vars.sh, which carries NPM_CONFIG_PREFIX etc.)
+  programs.zsh.enable = true;
+
   # my own settings
   system.defaults = {
     NSGlobalDomain = {
