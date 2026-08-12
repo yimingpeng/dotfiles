@@ -52,14 +52,9 @@
       "/Users/yimingpeng/Library/Application Support/Godot/app_userdata/CodeA"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "hooks": {
-    "PostToolUse": [],
-    "PostToolUseFailure": [],
-    "PreToolUse": [],
-    "SessionStart": [],
-    "Stop": [],
-    "UserPromptSubmit": []
+    "SessionStart": [{"matcher":"*","hooks":[{"type":"command","command":"bash '/Users/yimingpeng/.claude/hooks/herdr-agent-state.sh' session","timeout":10}]}]
   },
   "statusLine": {
     "type": "command",
@@ -80,6 +75,6 @@
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "tui": "fullscreen",
-  "agentPushNotifEnabled": true,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "agentPushNotifEnabled": true
 }
