@@ -53,6 +53,7 @@
       "ca-certificates"
       "openssl@3"
       "pi-coding-agent"
+      "gh"
     ];
     casks = [
       "wezterm"

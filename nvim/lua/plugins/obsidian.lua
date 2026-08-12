@@ -25,6 +25,10 @@ return {
       },
     },
 
+    -- disable obsidian.nvim's own conceal-based rendering so render-markdown.nvim
+    -- (from the lang.markdown extra) is the single renderer, avoiding double styling
+    ui = { enable = false },
+
     -- see below for full list of options 👇
     completion = {
       -- Set to false to disable completion.
