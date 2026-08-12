@@ -91,7 +91,9 @@ in
   home.file.".config/opencode/AGENTS.md".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
 
-  # pi agent 
+  # pi agent
+  home.file.".pi/agent/AGENTS.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
   home.file.".pi/agent/themes".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/.pi/agent/themes";
   home.file.".pi/agent/extensions".source =
