@@ -50,6 +50,9 @@
     brews = [
       "zoxide"
       "herdr"
+      "ca-certificates"
+      "openssl@3"
+      "pi-coding-agent"
     ];
     casks = [
       "wezterm"
