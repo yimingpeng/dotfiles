@@ -44,8 +44,9 @@
   };
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap";   # remove anything not listed here 
-    onActivation.autoUpdate = true; # auto-update
+    onActivation.cleanup = "zap";   # remove anything not listed here
+    onActivation.autoUpdate = true; # refresh brew's package index (does not upgrade installed packages)
+    onActivation.upgrade = true;    # actually upgrade outdated brews/casks on every activation
     onActivation.extraFlags = [ "--force" ];
     brews = [
       "zoxide"
