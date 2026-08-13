@@ -15,6 +15,7 @@ in
     jq        # json on the command line
     lazygit
     neovim
+    nil        # Nix language server, used by nvim's nil_ls (Mason can't build it: no cargo)
     # the font everything renders in
     nerd-fonts.hack
     nodejs_22
