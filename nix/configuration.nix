@@ -5,7 +5,7 @@
   nix.enable = false;
 
   nixpkgs.config.allowUnfree = true; # allow us to install apps that are not completely free
-  nixpkgs.hostPlatform = "aarch64-darwin"; # use x86-64-darwin for Intel CPU
+  nixpkgs.hostPlatform = "x86_64-darwin"; # use x86_64-darwin for Intel CPU
   
   # Define the main user, get from `id` command
   system.primaryUser = "yimingpeng";
@@ -41,6 +41,7 @@
   nix-homebrew = {
     enable = true;
     user = "yimingpeng";
+    autoMigrate = true;
   };
   homebrew = {
     enable = true;

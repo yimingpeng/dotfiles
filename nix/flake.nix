@@ -17,7 +17,7 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, home-manager }: {
-    darwinConfigurations."Yiming-macbook-m1-pro" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."Yiming-iMac" = nix-darwin.lib.darwinSystem {
       modules = [ 
         ./configuration.nix
         nix-homebrew.darwinModules.nix-homebrew
