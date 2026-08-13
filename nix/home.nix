@@ -19,6 +19,7 @@ in
     # the font everything renders in
     nerd-fonts.hack
     nodejs_22
+    uv          # python package manager; `uv tool install` puts tools in ~/.local/bin
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
