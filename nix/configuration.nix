@@ -1,12 +1,12 @@
 { ... }:
 
 {
-  # Leave the determinate to handle the Nix, so here we disable it from nix-darwin 
+  # Leave the determinate to handle the Nix, so here we disable it from nix-darwin
   nix.enable = false;
 
   nixpkgs.config.allowUnfree = true; # allow us to install apps that are not completely free
   nixpkgs.hostPlatform = "x86_64-darwin"; # use x86_64-darwin for Intel CPU
-  
+
   # Define the main user, get from `id` command
   system.primaryUser = "yimingpeng";
   users.users.yimingpeng = {
@@ -25,19 +25,19 @@
   # my own settings
   system.defaults = {
     NSGlobalDomain = {
-        AppleInterfaceStyle = "Dark";
-        # KeyRepeat = 2;            # fast key repeat 
-        # InitialKeyRepeat = 25;    # short delay before repeat, but not so short it double-fires on mechanical keyboard dwell time
-        _HIHideMenuBar = true;    # auto-hide the menu bar
-        AppleShowAllExtensions = true;
+      AppleInterfaceStyle = "Dark";
+      # KeyRepeat = 2;            # fast key repeat
+      # InitialKeyRepeat = 25;    # short delay before repeat, but not so short it double-fires on mechanical keyboard dwell time
+      _HIHideMenuBar = true; # auto-hide the menu bar
+      AppleShowAllExtensions = true;
     };
     dock.autohide = true;
-    finder.FXPreferredViewStyle = "Nlsv"; # list view by default 
-    finder.CreateDesktop = false;         # clean desktop 
-    trackpad.Clicking = true;             # tap to click
+    finder.FXPreferredViewStyle = "Nlsv"; # list view by default
+    finder.CreateDesktop = false; # clean desktop
+    trackpad.Clicking = true; # tap to click
   };
 
-  # add the homebrew configurations 
+  # add the homebrew configurations
   nix-homebrew = {
     enable = true;
     user = "yimingpeng";
@@ -45,9 +45,9 @@
   };
   homebrew = {
     enable = true;
-    onActivation.cleanup = "zap";   # remove anything not listed here
+    onActivation.cleanup = "zap"; # remove anything not listed here
     onActivation.autoUpdate = true; # refresh brew's package index (does not upgrade installed packages)
-    onActivation.upgrade = true;    # actually upgrade outdated brews/casks on every activation
+    onActivation.upgrade = true; # actually upgrade outdated brews/casks on every activation
     onActivation.extraFlags = [ "--force" ];
     brews = [
       "zoxide"
@@ -56,6 +56,7 @@
       "openssl@3"
       "pi-coding-agent"
       "gh"
+      "docker"
     ];
     casks = [
       "wezterm"
