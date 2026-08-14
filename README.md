@@ -22,7 +22,8 @@ The repo contains all my dotfiles
   `agents/AGENTS.md`
 - `.claude`: My Claude Code settings (`settings.json`), symlinked into
   `~/.claude`, plus `CLAUDE.md` (symlink to the project `AGENTS.md`) so
-  Claude Code picks up the project rules
+  Claude Code picks up the project rules. The directory is gitignored
+  (see `.gitignore`) - `settings.json` is local-only and no longer tracked
 - `archives`: Deprecated/legacy configs kept for reference (e.g. the old
   `.zshrc`, now that zsh is configured declaratively via `nix/home.nix`)
 
@@ -110,3 +111,6 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 - By 14/08/2026, added an Installed applications section listing everything
   installed via `nix/home.nix` (packages + enabled programs) and
   `nix/configuration.nix` (homebrew brews/casks).
+- By 14/08/2026, stopped tracking `.claude/settings.json` (it was already in
+  `.gitignore`, but was still tracked from before the ignore rule was added).
+  It is now untracked and gitignored like the rest of `.claude`.
