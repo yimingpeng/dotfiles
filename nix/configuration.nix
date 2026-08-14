@@ -67,6 +67,7 @@
       "visual-studio-code"
       "betterdisplay"
       "hiddenbar"
+      "arc"
     ];
   };
 }
