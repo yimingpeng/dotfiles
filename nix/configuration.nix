@@ -56,7 +56,6 @@
       "openssl@3"
       "pi-coding-agent"
       "gh"
-      "spokenly"
       "tailscale"
     ];
     casks = [
@@ -64,6 +63,7 @@
       "claude-code"
       "alfred"
       "codexbar"
+      "spokenly"
     ];
   };
 }
