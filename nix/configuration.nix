@@ -64,6 +64,9 @@
       "alfred"
       "codexbar"
       "spokenly"
+      "visual-studio-code"
+      "betterdisplay"
+      "hiddenbar"
     ];
   };
 }
