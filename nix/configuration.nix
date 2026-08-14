@@ -68,6 +68,9 @@
       "betterdisplay"
       "hiddenbar"
       "arc"
+      "sublime-text"
+      "rectangle"
+      "bitwarden"
     ];
   };
 }
