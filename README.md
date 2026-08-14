@@ -6,15 +6,23 @@ The repo contains all my dotfiles
 
 - `wezterm`: This folder contains the configs for my `wezterm`
 - `iterm2`: This folder contains my default `iterm2` profile
-- `nvim`: This folder contains all the configs for my `nvim`
+- `nvim`: My `nvim` config, LazyVim-based - catppuccin colorscheme, `obsidian.nvim`
+  wired to my personal notes vault, telescope tweaks (horizontal layout,
+  `<leader>fp` for plugin files), `cmp-emoji` completion, and LSPs for
+  nix/python/typescript/markdown (`nil_ls` comes from home-manager, not
+  Mason)
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is
   suitable for my filco 68 keyboard
 - `starship.toml`: This is for configuring the look-and-feel for the prompt
 - `vscode`: This folder includes all the configs for my `vscode`
 - `herdr`: Config for `herdr`, a terminal session manager with tmux-style pane
   keybindings and an agents panel for managing multiple AI coding agent sessions
+- `AGENTS.md`: Project-level agent rules for this repo (e.g. always update
+  the README at the end of any change); global rules live in
+  `agents/AGENTS.md`
 - `.claude`: My Claude Code settings (`settings.json`), symlinked into
-  `~/.claude`
+  `~/.claude`, plus `CLAUDE.md` (symlink to the project `AGENTS.md`) so
+  Claude Code picks up the project rules
 - `archives`: Deprecated/legacy configs kept for reference (e.g. the old
   `.zshrc`, now that zsh is configured declaratively via `nix/home.nix`)
 
@@ -28,8 +36,54 @@ The repo contains all my dotfiles
 - `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles` and runs
   `darwin-rebuild switch` to apply the config
 - Homebrew itself is now managed through nix-darwin (see
-  `nix/configuration.nix`): brews `zoxide`, `herdr`; casks `wezterm`,
-  `claude-code`
+  `nix/configuration.nix`). See [Installed applications](#installed-applications)
+  for the full list of what gets installed
+
+## Installed applications
+
+Everything below is installed declaratively - nixpkgs packages come from
+`nix/home.nix`, homebrew packages from `nix/configuration.nix`, and enabled
+programs from home-manager's `programs.*` modules in `nix/home.nix`.
+
+### Homebrew casks (GUI apps)
+
+| App | Purpose | Config |
+| --- | --- | --- |
+| `wezterm` | Terminal emulator | `wezterm/` |
+| `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
+
+### Homebrew brews (CLI)
+
+| Tool | Purpose |
+| --- | --- |
+| `zoxide` | Smarter `cd` |
+| `herdr` | Terminal session manager with agents panel |
+| `gh` | GitHub CLI |
+| `pi-coding-agent` | AI coding agent (pi) |
+| `openssl@3` | TLS/SSL library |
+| `ca-certificates` | Root CA certificates |
+
+### home-manager packages (nixpkgs)
+
+| Tool | Purpose |
+| --- | --- |
+| `neovim` | Editor (LazyVim-based, see `nvim/`) |
+| `lazygit` | Terminal git UI |
+| `ripgrep` | Fast search |
+| `fd` | Fast find |
+| `fzf` | Fuzzy finder |
+| `jq` | JSON on the command line |
+| `nodejs_22` | Node.js 22 runtime |
+| `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
+| `nil` | Nix language server (used by nvim's `nil_ls`) |
+| `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
+
+### Enabled via home-manager `programs.*` modules
+
+- `zsh` with autosuggestions, syntax highlighting, and aliases
+- `starship` prompt (config in `starship.toml`)
+- `git` (identity set in `home.nix`)
+- `zoxide` (replaces `cd` entirely)
 
 ## References
 
@@ -49,3 +103,10 @@ The repo contains all my dotfiles
 - By 11/08/2026, added a References section crediting Kun Chen's dotfiles and
   YouTube walkthrough as the inspiration for the nix-darwin + home-manager
   setup.
+- By 14/08/2026, documented the `nvim` setup (LazyVim config, plugins, LSP
+  details) in this README, and added a project-level `AGENTS.md` at the repo
+  root (with `.claude/CLAUDE.md` symlinked to it) requiring that the README
+  be updated after every change to this repo.
+- By 14/08/2026, added an Installed applications section listing everything
+  installed via `nix/home.nix` (packages + enabled programs) and
+  `nix/configuration.nix` (homebrew brews/casks).
