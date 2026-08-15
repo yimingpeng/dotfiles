@@ -56,11 +56,19 @@
       "openssl@3"
       "pi-coding-agent"
       "gh"
-      "docker"
+      "tailscale"
     ];
     casks = [
       "wezterm"
       "claude-code"
+      "docker-desktop"
+      "alfred"
+      "arc"
+      "betterdisplay"
+      "rectangle"
+      "sublime-text"
+      "spokenly"
+      "visual-studio-code"
     ];
   };
 }
