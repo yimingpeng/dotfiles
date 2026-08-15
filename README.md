@@ -24,8 +24,68 @@ The repo contains all my dotfiles
   `~/.claude`, plus `CLAUDE.md` (symlink to the project `AGENTS.md`) so
   Claude Code picks up the project rules. The directory is gitignored
   (see `.gitignore`) - `settings.json` is local-only and no longer tracked
+- `agents`: Everything shared across AI coding agents.
+  - `agents/AGENTS.md`: Global agent rules, symlinked into `~/.claude/CLAUDE.md`,
+    `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, and
+    `~/.pi/agent/AGENTS.md`. Includes the vendored Ponytail ruleset in a marked
+    block
+  - `agents/skills`: The skills that are switched **on**. Every entry is a
+    symlink into `agents/vendor/`. Symlinked into `~/.claude/skills`,
+    `~/.pi/agent/skills`, and `~/.codex/skills/dotfiles`
+  - `agents/vendor`: Full upstream skill sets, tracked as `git subtree` (see
+    [Updating vendored skills](#updating-vendored-skills))
+  - `agents/.pi`: pi settings, models, themes, and extensions
 - `archives`: Deprecated/legacy configs kept for reference (e.g. the old
   `.zshrc`, now that zsh is configured declaratively via `nix/home.nix`)
+
+## Agent skills
+
+Skills follow the [Agent Skills standard](https://agentskills.io): a folder with
+a `SKILL.md`. Claude Code, pi, and Codex all read that format, so one directory
+serves all three.
+
+Two layers, deliberately:
+
+- **`agents/vendor/`** holds the complete upstream sets, so everything is on
+  disk to browse and update.
+- **`agents/skills/`** holds symlinks to only the skills that are enabled. This
+  is what the agents actually see.
+
+Enable a skill:
+
+```sh
+ln -sfn ../vendor/mattpocock-skills/skills/engineering/wizard \
+        ~/.dotfiles/agents/skills/wizard
+```
+
+Disable one: delete the symlink. Neither needs a rebuild - only adding a brand
+new *path* to `home.nix` does.
+
+Claude Code only looks **one level deep** for `SKILL.md`, which is why
+`agents/skills/` is flat and the categorised upstream tree stays in
+`agents/vendor/`.
+
+`~/.codex/skills` is **not** symlinked wholesale, because Codex owns and writes
+that directory (its `.system` built-ins plus installed skills). Codex gets
+`~/.codex/skills/dotfiles` instead.
+
+### Updating vendored skills
+
+```sh
+# Matt Pocock's skills
+git subtree pull --prefix=agents/vendor/mattpocock-skills \
+  https://github.com/mattpocock/skills.git main --squash
+
+# Ponytail
+git subtree pull --prefix=agents/vendor/ponytail \
+  https://github.com/DietrichGebert/ponytail.git main --squash
+```
+
+Existing symlinks keep working, since they point at paths inside the subtree.
+Two things to check after a pull: newly added skills are **not** enabled
+automatically (add a symlink if wanted), and if `agents/vendor/ponytail/AGENTS.md`
+changed, re-copy it into the marked `VENDORED: ponytail` block in
+`agents/AGENTS.md`.
 
 ## System setup (nix-darwin + home-manager)
 
@@ -75,6 +135,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `fzf` | Fuzzy finder |
 | `jq` | JSON on the command line |
 | `nodejs_22` | Node.js 22 runtime |
+| `codex` | OpenAI Codex CLI (the `codex` command; the Codex app is separate) |
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
 | `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
