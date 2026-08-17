@@ -71,6 +71,7 @@
       "sublime-text"
       "rectangle"
       "bitwarden"
+      "syncthing"
     ];
   };
 }
