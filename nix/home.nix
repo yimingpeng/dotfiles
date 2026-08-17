@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
@@ -32,9 +32,19 @@ in
     enable = true;
     autosuggestion.enable = true;      # ghost text from history
     syntaxHighlighting.enable = true;  # commands turn green when valid
-    initContent = ''
-      bindkey '^f' autosuggest-accept
-    '';
+    initContent = lib.mkMerge [
+      ''
+        bindkey '^f' autosuggest-accept
+      ''
+      # zoxide's enableZshIntegration doesn't control where its init line
+      # lands in .zshrc - home-manager splices it in at a fixed position
+      # regardless of declaration order below. It must run after starship
+      # (or anything else hooking precmd/chpwd) or it warns on every `cd`,
+      # so the eval is placed here under mkAfter instead.
+      (lib.mkAfter ''
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
+      '')
+    ];
     shellAliases = {
       ".." = "cd ..";
       add = "git add .";
@@ -63,10 +73,13 @@ in
     enable = true;
     # Replaces the default 'cd' command completely with zoxide
     options = [ "--cmd cd" ];
-    
+
     # integration to different shells
     enableBashIntegration = true;
-    enableZshIntegration = true;
+    # zsh integration is wired manually in programs.zsh.initContent above
+    # (via mkAfter) so it inits after starship instead of wherever
+    # home-manager would otherwise splice it in.
+    enableZshIntegration = false;
     enableFishIntegration = true;
   };
 

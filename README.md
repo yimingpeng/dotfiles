@@ -175,3 +175,12 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 - By 14/08/2026, stopped tracking `.claude/settings.json` (it was already in
   `.gitignore`, but was still tracked from before the ignore rule was added).
   It is now untracked and gitignored like the rest of `.claude`.
+- By 18/08/2026, removed `NSGlobalDomain._HIHideMenuBar` from
+  `nix/configuration.nix`, which had been auto-hiding the top menu bar
+  alongside the Dock. `dock.autohide` alone now controls Dock-only hiding.
+- By 18/08/2026, fixed zoxide's "initialize me at the end of your shell
+  config" warning firing on every `cd`. `programs.zoxide.enableZshIntegration`
+  doesn't control where home-manager splices the init line into `.zshrc`, so
+  it always landed before `starship`. Turned that integration off and eval
+  `zoxide init zsh` manually in `programs.zsh.initContent` under `lib.mkAfter`
+  instead, forcing it to the very end of `.zshrc`.

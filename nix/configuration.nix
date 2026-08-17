@@ -28,7 +28,6 @@
       AppleInterfaceStyle = "Dark";
       # KeyRepeat = 2;            # fast key repeat
       # InitialKeyRepeat = 25;    # short delay before repeat, but not so short it double-fires on mechanical keyboard dwell time
-      _HIHideMenuBar = true; # auto-hide the menu bar
       AppleShowAllExtensions = true;
     };
     dock.autohide = true;
@@ -71,7 +70,6 @@
       "sublime-text"
       "rectangle"
       "bitwarden"
-      "syncthing-app"
     ];
   };
 }
