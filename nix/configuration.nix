@@ -57,6 +57,7 @@
       "gh"
       "tailscale"
       "pre-commit"
+      "kubeconform"
     ];
     casks = [
       "wezterm"
