@@ -190,3 +190,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   it always landed before `starship`. Turned that integration off and eval
   `zoxide init zsh` manually in `programs.zsh.initContent` under `lib.mkAfter`
   instead, forcing it to the very end of `.zshrc`.
+- By 18/08/2026, added `rclone` to `home.packages` to replace the pCloud
+  desktop app for bulk uploads, which was consuming excessive memory. The
+  `rclone` remote config (`~/.config/rclone/rclone.conf`) holds OAuth tokens
+  and is intentionally not tracked in this repo; set it up locally with
+  `rclone config`.

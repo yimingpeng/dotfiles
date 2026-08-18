@@ -23,6 +23,7 @@ in
     nodejs_22
     codex       # OpenAI Codex CLI (the `codex` command; the Codex app is separate)
     uv          # python package manager; `uv tool install` puts tools in ~/.local/bin
+    rclone      # CLI sync/upload to cloud storage (used for pCloud instead of the memory-hungry pCloud app)
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
