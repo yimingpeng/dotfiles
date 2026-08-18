@@ -16,6 +16,8 @@ in
     lazygit
     neovim
     nil        # Nix language server, used by nvim's nil_ls (Mason can't build it: no cargo)
+    nixfmt     # Nix formatter, invoked by nil_ls
+    statix     # Nix linter, invoked by nil_ls for diagnostics
     # the font everything renders in
     nerd-fonts.hack
     nodejs_22

@@ -49,3 +49,6 @@ The repo contains all my dotfiles
 - By 11/08/2026, added a References section crediting Kun Chen's dotfiles and
   YouTube walkthrough as the inspiration for the nix-darwin + home-manager
   setup.
+- By 18/08/2026, added `nixfmt` and `statix` to `home.packages` in
+  `nix/home.nix` so `nil_ls` (nvim's Nix LSP) has formatter and linter
+  binaries to call.

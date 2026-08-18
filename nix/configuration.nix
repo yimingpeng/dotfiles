@@ -57,6 +57,7 @@
       "pi-coding-agent"
       "gh"
       "tailscale"
+      "pre-commit"
     ];
     casks = [
       "wezterm"
