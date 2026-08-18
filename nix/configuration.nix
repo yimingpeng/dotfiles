@@ -72,6 +72,7 @@
       "sublime-text"
       "spokenly"
       "visual-studio-code"
+      "orbstack"
     ];
   };
 }
