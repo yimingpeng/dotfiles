@@ -138,6 +138,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `codex` | OpenAI Codex CLI (the `codex` command; the Codex app is separate) |
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
+| `nixfmt` | Nix formatter (invoked by `nil_ls`) |
+| `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
 | `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
 
 ### Enabled via home-manager `programs.*` modules
@@ -165,6 +167,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 - By 11/08/2026, added a References section crediting Kun Chen's dotfiles and
   YouTube walkthrough as the inspiration for the nix-darwin + home-manager
   setup.
+- By 18/08/2026, fixed a missing `;` in `nix/configuration.nix`'s `homebrew`
+  block that was breaking `nil_ls`'s nixfmt formatting, and added `nixfmt`
+  and `statix` to `home.packages` so `nil_ls`'s formatting and lint
+  diagnostics actually have binaries to call.
 - By 14/08/2026, documented the `nvim` setup (LazyVim config, plugins, LSP
   details) in this README, and added a project-level `AGENTS.md` at the repo
   root (with `.claude/CLAUDE.md` symlinked to it) requiring that the README
