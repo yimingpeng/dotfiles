@@ -59,6 +59,7 @@
       "tailscale"
       "pre-commit"
       "kubeconform"
+      "rsync"
     ];
     casks = [
       "wezterm"
