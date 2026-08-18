@@ -69,7 +69,6 @@
       "sublime-text"
       "spokenly"
       "visual-studio-code"
-      "syncthing-app"
     ];
   };
 }
