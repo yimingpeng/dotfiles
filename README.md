@@ -52,3 +52,8 @@ The repo contains all my dotfiles
 - By 18/08/2026, added `nixfmt` and `statix` to `home.packages` in
   `nix/home.nix` so `nil_ls` (nvim's Nix LSP) has formatter and linter
   binaries to call.
+- By 18/08/2026, added `rclone` to `home.packages` to replace the pCloud
+  desktop app for bulk uploads, which was consuming excessive memory. The
+  `rclone` remote config (`~/.config/rclone/rclone.conf`) holds OAuth tokens
+  and is intentionally not tracked in this repo; set it up locally with
+  `rclone config`.
