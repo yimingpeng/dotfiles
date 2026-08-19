@@ -195,3 +195,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `rclone` remote config (`~/.config/rclone/rclone.conf`) holds OAuth tokens
   and is intentionally not tracked in this repo; set it up locally with
   `rclone config`.
+- By 19/08/2026, added `create-project` to PATH via a
+  `home.file.".local/bin/create-project"` symlink in `nix/home.nix`, pointing
+  at `create_project.sh` in the (separate, pCloud-synced) `automation/workflow`
+  repo. `~/.local/bin` is already on PATH via nix. Also fixed that wrapper
+  script to `cd` to its own resolved location instead of a hardcoded
+  `~/Documents/workflow`, since it's now invoked through a symlink and its
+  actual location is the pCloud-synced repo.
