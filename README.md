@@ -202,3 +202,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   script to `cd` to its own resolved location instead of a hardcoded
   `~/Documents/workflow`, since it's now invoked through a symlink and its
   actual location is the pCloud-synced repo.
+- By 20/08/2026, moved off pCloud: this repo now lives at
+  `~/Documents/My_Code/dotfiles` (the old pCloud copy had sync-conflict
+  damage to its `.git`). `~/.dotfiles` is repointed there; `rebuild_nix.sh`
+  handles this automatically on any machine it's run from.
