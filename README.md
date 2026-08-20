@@ -37,6 +37,9 @@ The repo contains all my dotfiles
   - `agents/.pi`: pi settings, models, themes, and extensions
 - `archives`: Deprecated/legacy configs kept for reference (e.g. the old
   `.zshrc`, now that zsh is configured declaratively via `nix/home.nix`)
+- `scripts`: Standalone personal scripts, symlinked onto `PATH` via
+  `nix/home.nix`. Currently just `create_project.py` (the `create-project`
+  command)
 
 ## Agent skills
 
@@ -206,3 +209,12 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `~/Documents/My_Code/dotfiles` (the old pCloud copy had sync-conflict
   damage to its `.git`). `~/.dotfiles` is repointed there; `rebuild_nix.sh`
   handles this automatically on any machine it's run from.
+- By 20/08/2026, folded the separate `automation/workflow` repo's
+  `create-project` script into this repo as `scripts/create_project.py`.
+  Dropped `click` in favor of plain `sys.argv` (single positional arg didn't
+  need a CLI framework), and dropped the `.venv`/`uv.lock`/`pyproject.toml`
+  scaffolding and the `create_project.sh` wrapper along with it - the script
+  is pure stdlib, so it's just an executable file symlinked directly onto
+  `PATH` like everything else in `nix/home.nix`. `config.toml` in the old repo
+  was unused dead weight (the script hardcoded its paths regardless) and
+  wasn't carried over.

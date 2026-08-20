@@ -139,13 +139,9 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/.pi/agent/settings.json";
 
   # create-project: scaffolds a matching project folder pair (Finder +
-  # Obsidian/Google Drive) with a linked README. Source lives in the
-  # pCloud-synced workflow repo, not in .dotfiles - this symlink just puts it
-  # on PATH. Requires pCloud to be mounted at this path on any machine this
-  # is rebuilt on.
+  # Obsidian/Google Drive) with a linked README.
   home.file.".local/bin/create-project" = {
-    source = config.lib.file.mkOutOfStoreSymlink
-      "${config.home.homeDirectory}/pCloud/02 - Areas/My_Code/automation/workflow/create_project.sh";
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/scripts/create_project.py";
     executable = true;
   };
 
