@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
@@ -21,6 +21,7 @@ in
     # the font everything renders in
     nerd-fonts.hack
     nodejs_22
+    codex       # OpenAI Codex CLI (the `codex` command; the Codex app is separate)
     uv          # python package manager; `uv tool install` puts tools in ~/.local/bin
     rclone      # CLI sync/upload to cloud storage (used for pCloud instead of the memory-hungry pCloud app)
   ];
@@ -34,9 +35,19 @@ in
     enable = true;
     autosuggestion.enable = true;      # ghost text from history
     syntaxHighlighting.enable = true;  # commands turn green when valid
-    initContent = ''
-      bindkey '^f' autosuggest-accept
-    '';
+    initContent = lib.mkMerge [
+      ''
+        bindkey '^f' autosuggest-accept
+      ''
+      # zoxide's enableZshIntegration doesn't control where its init line
+      # lands in .zshrc - home-manager splices it in at a fixed position
+      # regardless of declaration order below. It must run after starship
+      # (or anything else hooking precmd/chpwd) or it warns on every `cd`,
+      # so the eval is placed here under mkAfter instead.
+      (lib.mkAfter ''
+        eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
+      '')
+    ];
     shellAliases = {
       ".." = "cd ..";
       add = "git add .";
@@ -65,10 +76,13 @@ in
     enable = true;
     # Replaces the default 'cd' command completely with zoxide
     options = [ "--cmd cd" ];
-    
+
     # integration to different shells
     enableBashIntegration = true;
-    enableZshIntegration = true;
+    # zsh integration is wired manually in programs.zsh.initContent above
+    # (via mkAfter) so it inits after starship instead of wherever
+    # home-manager would otherwise splice it in.
+    enableZshIntegration = false;
     enableFishIntegration = true;
   };
 
@@ -123,5 +137,10 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/.pi/agent/models.json";
   home.file.".pi/agent/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/.pi/agent/settings.json";
+
+  # create-project: scaffolds a matching project folder pair (Finder +
+  # Obsidian/Google Drive) with a linked README.
+  home.file.".local/bin/create-project".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/scripts/create_project.py";
 
 }
