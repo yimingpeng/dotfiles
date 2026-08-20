@@ -140,9 +140,7 @@ in
 
   # create-project: scaffolds a matching project folder pair (Finder +
   # Obsidian/Google Drive) with a linked README.
-  home.file.".local/bin/create-project" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfiles}/scripts/create_project.py";
-    executable = true;
-  };
+  home.file.".local/bin/create-project".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/scripts/create_project.py";
 
 }
