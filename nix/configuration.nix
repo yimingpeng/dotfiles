@@ -73,6 +73,7 @@
       "spokenly"
       "visual-studio-code"
       "orbstack"
+      "android-studio"
     ];
   };
 }
