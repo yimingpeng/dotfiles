@@ -72,6 +72,7 @@
       "sublime-text"
       "rectangle"
       "bitwarden"
+      "android-studio"
     ];
   };
 }
