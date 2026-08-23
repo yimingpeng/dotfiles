@@ -58,6 +58,7 @@
       "tailscale"
       "pre-commit"
       "kubeconform"
+      "kubectl"
     ];
     casks = [
       "wezterm"
