@@ -70,7 +70,7 @@
       "betterdisplay"
       "rectangle"
       "sublime-text"
-      "spokenly"
+      "superwhisper"
       "visual-studio-code"
       "orbstack"
       "android-studio"
