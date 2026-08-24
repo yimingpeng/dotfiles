@@ -145,6 +145,12 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
 | `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
 
+### npm-global tools (via activation hook)
+
+| Tool | Purpose |
+| --- | --- |
+| `freebuff` | AI coding agent CLI; no nixpkgs/Homebrew package exists, so a `home.activation` hook runs `npm install -g` on every rebuild instead |
+
 ### Enabled via home-manager `programs.*` modules
 
 - `zsh` with autosuggestions, syntax highlighting, and aliases
@@ -218,3 +224,13 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `PATH` like everything else in `nix/home.nix`. `config.toml` in the old repo
   was unused dead weight (the script hardcoded its paths regardless) and
   wasn't carried over.
+- By 24/08/2026, added `freebuff` (an AI coding agent CLI). It has no
+  nixpkgs package or Homebrew formula, only `npm install -g freebuff`, and
+  ships releases frequently enough that hand-pinning an `npmDepsHash` for a
+  `buildNpmPackage` derivation wasn't worth the upkeep. Instead added a
+  `home.activation` hook in `nix/home.nix` that runs `npm install -g`
+  against `~/.npm-global` (already on `PATH` via the existing
+  `NPM_CONFIG_PREFIX`/`sessionPath` setup) on every `darwin-rebuild switch`,
+  so it self-updates like the Homebrew brews/casks do. The hook is
+  non-fatal on failure so a network blip doesn't break the rest of the
+  system activation.
