@@ -65,7 +65,7 @@
       "claude-code"
       "alfred"
       "codexbar"
-      "spokenly"
+      "superwhisper"
       "visual-studio-code"
       "betterdisplay"
       "hiddenbar"
