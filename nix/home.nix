@@ -29,6 +29,15 @@ in
   home.sessionVariables.EDITOR = "nvim";
   home.sessionVariables.NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
   home.sessionPath = [ "${config.home.homeDirectory}/.npm-global/bin" ];
+
+  # freebuff has no nixpkgs/Homebrew package, only `npm install -g freebuff`.
+  # Installed via activation hook (not a pinned buildNpmPackage derivation)
+  # since it ships new releases frequently; this keeps it auto-updated on
+  # every darwin-rebuild switch instead of hand-maintaining an npmDepsHash.
+  home.activation.installFreebuff = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" freebuff \
+      || echo "freebuff install failed, continuing"
+  '';
   
   # config the zsh
   programs.zsh = {
