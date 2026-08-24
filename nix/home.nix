@@ -38,7 +38,16 @@ in
     $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" freebuff \
       || echo "freebuff install failed, continuing"
   '';
-  
+
+  # ticktick-cli (official TickTick CLI) has no nixpkgs/Homebrew package,
+  # only `npm install -g @ticktick/ticktick-cli`. Same rationale as freebuff:
+  # ships frequent point releases, so an activation hook keeps it current
+  # instead of hand-pinning an npmDepsHash.
+  home.activation.installTicktickCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" @ticktick/ticktick-cli \
+      || echo "ticktick-cli install failed, continuing"
+  '';
+
   # config the zsh
   programs.zsh = {
     enable = true;
