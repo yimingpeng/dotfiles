@@ -150,7 +150,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | Tool | Purpose |
 | --- | --- |
 | `freebuff` | AI coding agent CLI; no nixpkgs/Homebrew package exists, so a `home.activation` hook runs `npm install -g` on every rebuild instead |
-| `@ticktick/ticktick-cli` | Official TickTick CLI (task management); same no-nixpkgs-package, activation-hook rationale as `freebuff` |
+| `@suibiji/dida-cli` | DIDA CLI (TickTick/Dida365's own documented task-management CLI, binary `dida`); same no-nixpkgs-package, activation-hook rationale as `freebuff` |
 
 ### Enabled via home-manager `programs.*` modules
 
@@ -240,12 +240,14 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   rebuild needed - it's live in `~/.claude/skills` immediately. It's
   invoked as `/teach`, not `/learn` (`disable-model-invocation: true` means
   it only runs on explicit invocation).
-- By 24/08/2026, added the official TickTick CLI (`@ticktick/ticktick-cli`).
-  Like `freebuff`, it has no nixpkgs/Homebrew package and ships frequent
-  point releases, so it's installed via a second `home.activation` hook in
+- By 24/08/2026, added the DIDA CLI (`@suibiji/dida-cli`, binary `dida`) -
+  this is the CLI actually documented on TickTick/Dida365's own help site
+  (help.dida365.com), not `@ticktick/ticktick-cli` as first assumed. Like
+  `freebuff`, it has no nixpkgs/Homebrew package and ships frequent point
+  releases, so it's installed via a second `home.activation` hook in
   `nix/home.nix` instead of a pinned `buildNpmPackage` derivation. After
-  rebuilding, run `ticktick login` once to authenticate (OAuth PKCE, opens a
-  browser) - that step is interactive and intentionally not scripted here.
+  rebuilding, run `dida auth login` once to authenticate (browser OAuth) -
+  that step is interactive and intentionally not scripted here.
   Also confirmed the vendored `ponytail` and `mattpocock-skills` skill sets
   (`agents/vendor/`) are frozen `git subtree` snapshots, not auto-updating -
   see "Updating vendored skills" above for the manual refresh commands.

@@ -39,13 +39,13 @@ in
       || echo "freebuff install failed, continuing"
   '';
 
-  # ticktick-cli (official TickTick CLI) has no nixpkgs/Homebrew package,
-  # only `npm install -g @ticktick/ticktick-cli`. Same rationale as freebuff:
-  # ships frequent point releases, so an activation hook keeps it current
-  # instead of hand-pinning an npmDepsHash.
-  home.activation.installTicktickCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" @ticktick/ticktick-cli \
-      || echo "ticktick-cli install failed, continuing"
+  # DIDA CLI (TickTick/Dida365's own documented CLI, binary `dida`) has no
+  # nixpkgs/Homebrew package, only `npm install -g @suibiji/dida-cli`. Same
+  # rationale as freebuff: ships frequent point releases, so an activation
+  # hook keeps it current instead of hand-pinning an npmDepsHash.
+  home.activation.installDidaCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" @suibiji/dida-cli \
+      || echo "dida-cli install failed, continuing"
   '';
 
   # config the zsh
