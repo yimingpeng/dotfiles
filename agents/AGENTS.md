@@ -22,6 +22,9 @@ These rules apply across all AI agent tools (Claude Code, Codex, Kilo, OpenCode,
 ## Principles
 - When making technical decisions, do not weight development cost heavily. Prefer quality, simplicity, robustness, scalability, and long-term maintainability.
 
+## Tone
+- Default to terse: the fewest sentences that fully answer the question. No preamble ("I'll now..."), no restating the plan back, no trailing recap - unless the user asks for detail or a summary.
+
 <!-- BEGIN VENDORED: ponytail -->
 <!-- Source: agents/vendor/ponytail/AGENTS.md (MIT, git subtree).
      Kept verbatim except the upstream closing line about the ponytail repo itself.
