@@ -234,3 +234,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   so it self-updates like the Homebrew brews/casks do. The hook is
   non-fatal on failure so a network blip doesn't break the rest of the
   system activation.
+- By 24/08/2026, enabled the `teach` skill (from `mattpocock-skills`,
+  `productivity/teach`) by symlinking it into `agents/skills/teach`. No
+  rebuild needed - it's live in `~/.claude/skills` immediately. It's
+  invoked as `/teach`, not `/learn` (`disable-model-invocation: true` means
+  it only runs on explicit invocation).
