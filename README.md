@@ -29,9 +29,10 @@ The repo contains all my dotfiles
     `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, and
     `~/.pi/agent/AGENTS.md`. Includes the vendored Ponytail ruleset in a marked
     block
-  - `agents/skills`: The skills that are switched **on**. Every entry is a
-    symlink into `agents/vendor/`. Symlinked into `~/.claude/skills`,
-    `~/.pi/agent/skills`, and `~/.codex/skills/dotfiles`
+  - `agents/skills`: The skills that are switched **on**. First-party skills
+    (e.g. `writing-mentor`, `talk-workflow`) live directly here as folders;
+    every other entry is a symlink into `agents/vendor/`. Symlinked into
+    `~/.claude/skills`, `~/.pi/agent/skills`, and `~/.codex/skills/dotfiles`
   - `agents/vendor`: Full upstream skill sets, tracked as `git subtree` (see
     [Updating vendored skills](#updating-vendored-skills))
   - `agents/.pi`: pi settings, models, themes, and extensions
@@ -51,8 +52,10 @@ Two layers, deliberately:
 
 - **`agents/vendor/`** holds the complete upstream sets, so everything is on
   disk to browse and update.
-- **`agents/skills/`** holds symlinks to only the skills that are enabled. This
-  is what the agents actually see.
+- **`agents/skills/`** holds only the skills that are enabled. First-party
+  skills (like `writing-mentor` and `talk-workflow`) live here as folders;
+  vendored skills are enabled as symlinks into `agents/vendor/`. This is what
+  the agents actually see.
 
 Enable a skill:
 
@@ -251,3 +254,11 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   Also confirmed the vendored `ponytail` and `mattpocock-skills` skill sets
   (`agents/vendor/`) are frozen `git subtree` snapshots, not auto-updating -
   see "Updating vendored skills" above for the manual refresh commands.
+- By 28/08/2026, added the `talk-workflow` skill, a first-party talk coach
+  distilled from the `agent-talk-workflow` repo into a single `SKILL.md` plus
+  one lazily-loaded `references/sources.md` (provenance honesty, the
+  load-bearing rulings, and the citation table). It lives directly in
+  `agents/skills/talk-workflow/` like `writing-mentor` - no vendor subtree, no
+  template pipeline, no checker script. Also corrected the README's
+  `agents/skills` description, which said every entry is a symlink into
+  `agents/vendor/`.
