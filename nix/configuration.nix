@@ -74,6 +74,7 @@
       "visual-studio-code"
       "orbstack"
       "android-studio"
+      "copilot-cli"
     ];
   };
 }
