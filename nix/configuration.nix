@@ -59,6 +59,7 @@
       "pre-commit"
       "kubeconform"
       "kubectl"
+      "llama.cpp"
     ];
     casks = [
       "wezterm"
