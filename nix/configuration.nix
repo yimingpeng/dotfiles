@@ -66,7 +66,7 @@
       "claude-code"
       "alfred"
       "codexbar"
-      "openwhispr"
+      "superwhisper"
       "visual-studio-code"
       "betterdisplay"
       "hiddenbar"
