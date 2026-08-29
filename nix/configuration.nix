@@ -74,6 +74,7 @@
       "rectangle"
       "bitwarden"
       "android-studio"
+      "copilot-cli"
     ];
   };
 }
