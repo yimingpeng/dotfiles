@@ -21,22 +21,54 @@ Non-negotiable. They override any other guidance in this file.
 4. **Exactly one human gate: angle/title.** The candidate directions come out of an interactive brainstorm with the speaker (Phase 2), never generated unilaterally. Then stop and require the speaker to pick the final angle/title. Never proceed past it. Gates that fire everywhere get clicked through and stop being gates.
 5. **End-of-talk Q&A with a planned last word.** Q&A sits at the end by default; after the final question the speaker takes the mic back and delivers the closing recall-phrases. Never cede the final minute to a stray question.
 6. **The delayed recall check is mandatory.** The only honest measure of the talk is what 2-3 attendees can recall, unprompted, about a week later. Coach the speaker to schedule it up front; without it every other claim in this skill is unfalsifiable.
+7. **The opening grill is mandatory and adversarial.** Phase 0 starts by interrogating the speaker - not interviewing them - until intent, focus, and the walk-out takeaways are pinned and every silent assumption is surfaced. The speaker's first framing of the talk is a starting point to attack, never the brief. No content work begins while Phase 0's question frontier is non-empty.
 
 ## Working file
 
 The skill keeps no prescribed file tree and no numbered artifacts. If you and the speaker want to persist work across sessions, agree on **one** working file (a single Markdown doc per talk is enough, defaulting to wherever the speaker wants it). Create it lazily on first use - and only that file. Create no folders, no templates, no pipeline.
 
-## Phase 0 - Calibrate
+## Offloading the legwork
 
-Goal: fix the constants before any content exists.
+Some phases are bulk reading and generation; some are the speaker's judgment and cannot be delegated at all. Keep them apart.
 
-- **Backward design.** Write the 2-3 takeaways as full sentences *first*; they become the filter every later phase runs against. The structure is designed backward from those sentences, not discovered at the end.
-- **Audience brief**: "X, trying to do Y, currently believes Z, walks out able to say [2-3 takeaways]." Your actual audience has never heard of you and is ready for a nap; your imagined audience has read all your papers. Write for the actual one.
+**Never delegate** - these happen in the session, with the speaker in the loop: the Phase 0 grill, the Phase 2 brainstorm, the Phase 3 gate, all recall-phrase and verbatim-zone *wording*, and the Phase 7 rehearsal coaching. A talk is a state change the speaker owns; an agent that picks the angle or authors the throughline has produced a generic talk.
+
+**Safe to offload** - self-contained legwork with a written deliverable:
+
+- Phase 1: mining the sources into the flat tagged corpus, and running down every claim and number to its owning source.
+- Phase 5: hunting real evidence visuals for assertion slides.
+- Phase 8: generating the 12-20 adversarial questions per assertion.
+
+**Default mechanism: a Claude Code background/sub-agent** - the same pattern the `research` skill uses. Give it a precise brief and one output file, keep coaching the speaker while it runs, then read the file back as raw input, not decisions. This keeps the main session's context clean.
+
+**Using a different coding agent (Pi, opencode, Codex, etc.).** A skill cannot supervise another harness the way a fleet does - there is no trust handling, no output contract, no recovery. What works: if the speaker has such a CLI installed and it runs non-interactively, shell out to it for one self-contained legwork task above, pointed at a specific output file, then read that file back and treat it exactly like a sub-agent result. Do not route the grill, the brainstorm, the gate, or any wording decision through it, and do not build a wrapper, queue, or profile layer around it - one direct call per task, or use the Claude sub-agent.
+
+## Phase 0 - Grill & calibrate
+
+Goal: interrogate the speaker until the talk's intent is sharp and the constants are fixed. This is a grilling, not an intake form - nothing downstream is trustworthy if it is rushed.
+
+**Grill method.** Map the open questions as a design tree: every decision branches into the ones that hang off it. Work it in rounds. The frontier is every question whose prerequisites are already settled - ask the whole frontier in one round, numbered, each with your recommended answer, then wait for the speaker's answers before the next round. Format each question:
+
+```
+❓ **Q1** - **<title>**: <body, including any options>
+
+➡️ <your recommended answer>
+```
+
+Each round's answers reshape the tree - recompute the frontier and ask again. A question that depends on another still-open question waits for a later round. Finding facts is your job: when a question needs something from the speaker's material or environment, dispatch a sub-agent (see *Offloading the legwork*) rather than asking the speaker to look it up, and ask the rest of the frontier while it runs. The phase ends when the frontier is empty - every branch visited, nothing silently assumed - and not before.
+
+**What the grill has to land** (these are the branches, not a script - chase whatever is softest first):
+
+- **The state change, not the topic.** "X, trying to do Y, currently believes Z, walks out able to say [2-3 takeaways]." Push until the speaker commits to what is *different* in the room afterward. Your actual audience has never heard of the speaker and is ready for a nap; the imagined one has read all the papers. Write for the actual one.
+- **The takeaways, written backward.** The 2-3 walk-out sentences come *first*, as full sentences; they become the filter every later phase runs against, and the structure is designed backward from them. Attack each one: is it falsifiable, is it worth a week of memory, would the speaker stake their name on it.
+- **Scope and sacrifice.** What is being deliberately cut. If nothing is being cut, the talk has no throughline yet - press harder.
+- **Why this speaker, why now, why this room.** If the honest answer is "I was asked to," find the version the speaker actually cares about, or flag that there isn't one.
 - **Constraints**: slot length, room shape, AV, recording, export format. Room shape and audience seniority decide the Q&A mode; fix the rest once and forget it.
 - **Talk type**: `research` / `technical-deepdive` / `advice-insight` / `persuasion-change`. Two rules branch on this later (the sparkline, and the Q&A mode).
 - **Q&A mode**: `end` by default; `interspersed` only when the audience is peer-expert *and* the room is <=~40 people *and* the speaker has delivered this material before.
 - **Success criteria as literal sentences**, including the delayed recall check. Schedule the +5-7 day recall check now, not after the talk.
-- Then challenge any ambiguity or contradiction you see before moving on.
+
+Surface every contradiction you see between the speaker's answers before leaving the phase.
 
 ## Phase 1 - Intake
 
@@ -154,10 +186,13 @@ Goal: close the loop so the second talk is dramatically cheaper than the first, 
 - **"7+/-2" as a design allowance.** It never applied to a listening audience. See `references/sources.md`.
 - **Skipping the delayed recall check.** Without it "the room enjoyed it" is the only evidence you have, and enjoyment is not retention.
 - **Automating the angle.** Choosing the angle/title for the speaker - or presenting a finished set of angles they had no hand in shaping - produces a generic talk. Their judgment is non-negotiable from the brainstorm through the final choice.
+- **Accepting the speaker's first framing.** The opening grill exists because the first way a speaker describes their talk is almost always the source material's shape, not the audience's. Skip or soften it and you get a talk with no throughline that only reveals itself at the gate, days later.
+- **Delegating judgment to a sub-agent.** Offloading corpus mining or question generation is fine; offloading the grill, the brainstorm, the gate, or the throughline wording is the automating-the-angle anti-pattern wearing a background job.
 
 ## Session patterns
 
 - **Speaker with a pile of material and no idea.** Run the ABT test; if the answer is "X and Y and Z," say so plainly - this is a report, not a talk - and ask for the one sentence.
+- **Speaker who resists the grill ("I already know what I want to say").** Run it anyway, tightly: ask for the 2-3 walk-out sentences and the one thing being cut. If those come back crisp and falsifiable, the grill is short. If they don't, that *is* the grill's finding.
 - **Speaker who wants to skip rehearsal.** Push back: the rehearsal schedule is where the talk is actually bought. Name the four minimum constraints from Phase 7.
 - **Speaker with six days left.** Compress: keep the gate, keep the freeze (pull it to T-2), keep >=4 reps on >=4 days. Drop the corpus to a single dump, drop seed questions only if there is no organizer contact.
 - **Speaker told "you sound over-rehearsed."** The fix is naturalness, not fewer reps.
