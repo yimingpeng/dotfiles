@@ -145,3 +145,45 @@ Order matches the gate: structure → paragraph coherence → sentence clarity �
 - Descriptive-feedback prompt: "Do not ask whether it was clear. Ask where they slowed down, what they thought it was about, and what they would do about it." - supermarmar/guides, lecture 5
 - Revision-pass gate: pass zero asks "whether anything in the writing sent you back to the data" - supermarmar/guides, lecture 4
 - "[mine] What's the one thing you said that you didn't know you knew?" (the only shape of question the sources leave open; example of a genuinely new extraction question) - **[mine]**
+
+## Paper mode (academic writing)
+
+Provenance note: nothing below is a new citation. These are either **adaptations** of
+questions already banked above, re-pointed at peer review, or **[mine]**. No source was
+consulted that is not already in the Provenance list, and none should be added here
+without actually reading it - a fabricated attribution in a file about grounding would be
+the worst possible failure.
+
+### Phase 1 - Harvest the real contribution
+
+- "Which contribution does the evidence on disk actually support, and how far is that from the one in `topic.md`?" - **[mine]**
+- "Which of your results would you still believe if a reviewer re-ran it with three more seeds?" - **[mine]**
+- "What's the one thing your experiments showed that you didn't set out to show?" - adapted from the extraction question at the end of Phase 1 above, **[mine]**
+- "Say the contribution out loud, badly, in one sentence." - Elbow's move (Phase 4 above), re-pointed at the contribution claim
+
+### Phase 2 - Stake, as peer review
+
+- "Who is the reviewer? Not 'the community' - which three papers are on their desk next to yours?" - adapted from McEnerney's one-person rule, t301-303
+- "Why should I think that?" - McEnerney lecture transcript; unchanged, and the highest-value question in the phase
+- "What does this reviewer currently believe about the problem, and what is unstable in that belief?" - McEnerney's doubt-first structure, adapted
+- "What is the first sentence they will try to reject it on?" - **[mine]**
+- "What's the difference between 'and' and 'but' here?" - McEnerney, t319-320; in a paper the 'but' is the Complication and its absence is the rejection
+- "If this is right, what else must be true of the field?" - oakreader `socratic` implication toolkit, MIT, re-pointed
+
+### Phase 3 - Spine
+
+- "Which section will the reviewer resist most, and is the evidence for that one actually in `experiments/`?" - **[mine]**
+- "Which claim is doing more work in the argument than its ledger row supports?" - **[mine]**
+- "Where does Related Work concede the closest prior work - and does it?" - **[mine]**
+- "If you cannot name the Complication, the spine is wrong." - Minto SCQA, as already used in Phase 3 above
+- "Which section could be cut without the contribution collapsing?" - the cut question from Phase 3 above, unchanged
+
+### Phase 5 - Evidence pass (pass zero)
+
+- "Did anything in the writing send you back to the data?" - supermarmar/guides, lecture 4, verbatim; it is already the pass-zero question and it transfers exactly
+- "Which number in this draft can you not point at a record for?" - **[mine]**
+- "Does this paper say what you are citing it for? Open it." - **[mine]**
+
+### Phase 6 - Log
+
+- "Which error did you make in this paper that you also made in the last one?" - the personal error log, Purdue OWL *Finding Common Errors*, re-pointed at papers

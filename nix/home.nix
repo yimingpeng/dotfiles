@@ -147,6 +147,13 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
   home.file.".pi/agent/skills".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/skills";
+
+  # Vendor-neutral global skills location. Pi auto-discovers this on every
+  # startup (hardcoded in its package-manager), so it MUST be wired to the
+  # same target as the other agents - otherwise skills installed here are
+  # orphaned and cause name-collision warnings on every session.
+  home.file.".agents/skills".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/skills";
   home.file.".pi/agent/themes".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/.pi/agent/themes";
   home.file.".pi/agent/extensions".source =
