@@ -1,3 +1,9 @@
+# custom.smart_directory spawns a bash process on every prompt. On network/FUSE
+# mounts (pCloud, iCloud) that spawn can exceed starship's default 500ms budget,
+# which prints a noisy "[WARN] ... timed out" and drops the directory segment.
+# The command itself is pure string work on $PWD, so it never blocks for real.
+command_timeout = 2000
+
 format = """
 [](bg:#DA627D fg:#9A348E)\
 ${custom.smart_directory}\

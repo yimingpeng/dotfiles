@@ -262,3 +262,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   template pipeline, no checker script. Also corrected the README's
   `agents/skills` description, which said every entry is a symlink into
   `agents/vendor/`.
+- By 31/08/2026, set `command_timeout = 2000` in `starship.toml`. The
+  `custom.smart_directory` module spawns a bash process on every prompt, and
+  inside pCloud/iCloud FUSE directories that spawn sometimes overran
+  starship's default 500ms budget, dumping a `[WARN] ... timed out` block into
+  the terminal and dropping the path segment from the prompt.
