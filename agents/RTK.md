@@ -1,11 +1,29 @@
-# RTK (Rust Token Killer) - reference
+# RTK - Rust Token Killer
 
-Placeholder file. Populated by running:
+**Usage**: Token-optimized CLI proxy (cuts up to 90% of bash output)
 
-    rtk init -g --no-patch
+## Meta Commands (always use rtk directly)
 
-after `darwin-rebuild switch` has installed the `rtk` Homebrew formula.
-That command writes the live RTK command reference here (via the
-symlink in `nix/home.nix`) and prints the `PreToolUse` hook JSON that
-must be merged into `~/.claude/settings.json` for transparent
-auto-rewriting in Claude Code.
+```bash
+rtk gain              # Show token savings analytics
+rtk gain --history    # Show command usage history with savings
+rtk discover          # Analyze Claude Code history for missed opportunities
+rtk proxy <cmd>       # Execute raw command without filtering (for debugging)
+```
+
+## Installation Verification
+
+```bash
+rtk --version         # Should show: rtk X.Y.Z
+rtk gain              # Should work (not "command not found")
+which rtk             # Verify correct binary
+```
+
+⚠️ **Name collision**: If `rtk gain` fails, you may have reachingforthejack/rtk (Rust Type Kit) installed instead.
+
+## Hook-Based Usage
+
+All other commands are automatically rewritten by the Claude Code hook.
+Example: `git status` → `rtk git status` (transparent, 0 tokens overhead)
+
+Refer to CLAUDE.md for full command reference.
