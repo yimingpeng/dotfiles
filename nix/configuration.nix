@@ -55,22 +55,20 @@ with lib;
     # newer versions of gh, openssl@3, pi-coding-agent, and rtk. Source builds
     # aren't viable here either (rtk pulls in llvm@22 + rust, multi-hour).
     # So:
-    #   - gh: stays here (currently installed 2.98.0 has a working bottle).
-    #     Pinned below to keep brew bundle from trying to upgrade to 2.99.0,
-    #     which has no x86_64 bottle. Unpin manually to upgrade once bottles
-    #     reappear.
+    #   - gh: moved to nixpkgs (home.packages in nix/home.nix) — cache-backed
+    #     for x86_64-darwin, no Tier 3 exposure. `cleanup = "zap"` removes the
+    #     old Homebrew copy on the next rebuild.
     #   - pi-coding-agent: downloaded from GitHub releases into ~/.local/
     #     by a home.activation hook in nix/home.nix
     #   - rtk: same — GitHub release binary into ~/.local/bin/
     #   - openssl@3: stays here because pre-commit/rsync/pi-coding-agent
-    #     etc. link against the Homebrew copy. Pinned below for the same
-    #     reason as gh.
+    #     etc. link against the Homebrew copy. Pinned below so brew bundle
+    #     doesn't try to upgrade it to a version with no x86_64 bottle.
     brews = [
       "zoxide"
       "herdr"
       "ca-certificates"
       "openssl@3"
-      "gh"
       "tailscale"
       "pre-commit"
       "kubeconform"
@@ -93,21 +91,21 @@ with lib;
     ];
   };
 
-  # Pin openssl@3 and gh so brew bundle doesn't try to upgrade either to
-  # a version with no x86_64 macOS bottle. Idempotent: `brew pin` is a no-op
-  # if already pinned. Runs as root via sudo -u, matching the user that owns
-  # the Homebrew install (brew pin writes to /usr/local/var/homebrew/pinned).
-  # postActivation runs AFTER the homebrew bundle slot in the master
-  # activation script, so the pin is in place before the next rebuild's
-  # brew bundle checks for outdated formulae.
+  # Pin openssl@3 so brew bundle doesn't try to upgrade it to a version with
+  # no x86_64 macOS bottle. Idempotent: `brew pin` is a no-op if already
+  # pinned. Runs as root via sudo -u, matching the user that owns the
+  # Homebrew install (brew pin writes to /usr/local/var/homebrew/pinned).
+  #
+  # ponytail: this only *keeps* an existing pin in place. postActivation runs
+  # AFTER the homebrew bundle slot, so if openssl@3 is ever unpinned (fresh
+  # install, manual `brew unpin`), the first rebuild that sees a bottle-less
+  # upgrade fails in brew bundle before this runs. Recover with a one-time
+  # manual `brew pin openssl@3`.
   system.activationScripts.postActivation = {
     text = ''
       /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
         ${config.homebrew.prefix}/bin/brew pin openssl@3 \
           || echo "brew pin openssl@3 failed (non-fatal), continuing"
-      /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
-        ${config.homebrew.prefix}/bin/brew pin gh \
-          || echo "brew pin gh failed (non-fatal), continuing"
     '';
   };
 }

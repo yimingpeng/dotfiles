@@ -14,6 +14,7 @@ in
     fzf       # fuzzy finder
     jq        # json on the command line
     lazygit
+    gh          # GitHub CLI - from nixpkgs, not Homebrew: no x86_64-darwin bottle for new versions (Tier 3)
     neovim
     nil        # Nix language server, used by nvim's nil_ls (Mason can't build it: no cargo)
     nixfmt     # Nix formatter, invoked by nil_ls
