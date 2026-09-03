@@ -17,7 +17,7 @@
     "git:github.com/algal/pi-openai-server-compaction@c6d593087709e9481223dc6c6c2269b371b5e055"
   ],
   "lastChangelogVersion": "0.84.2",
-  "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultProvider": "minimax-cn",
+  "defaultModel": "MiniMax-M3",
   "defaultThinkingLevel": "high"
 }

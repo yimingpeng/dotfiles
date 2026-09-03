@@ -55,6 +55,7 @@
       "ca-certificates"
       "openssl@3"
       "pi-coding-agent"
+      "rtk"           # Rust Token Killer - rewrites verbose shell output (git/tests) before agents read it
       "gh"
       "tailscale"
       "pre-commit"
