@@ -60,10 +60,13 @@ in
   # version is fragile (release gets yanked, rate-limited, mirror dies).
   # Acceptable ceiling because both projects ship signed releases; upgrade
   # is opt-in by editing the version string here.
+  # tar's -z shells out to a `gzip` on PATH, which the HM activation
+  # environment doesn't have (locked-down PATH, no /usr/bin). Pass the Nix
+  # gzip explicitly via --use-compress-program, same as curl/tar are pinned.
   home.activation.installRtk = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     $DRY_RUN_CMD ${pkgs.curl}/bin/curl -fsSL \
       "https://github.com/rtk-ai/rtk/releases/download/v0.47.0/rtk-x86_64-apple-darwin.tar.gz" \
-      | ${pkgs.gnutar}/bin/tar -xz -C "$HOME/.local/bin" rtk \
+      | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.gzip}/bin/gzip -x -C "$HOME/.local/bin" rtk \
       && ${pkgs.coreutils}/bin/chmod +x "$HOME/.local/bin/rtk" \
       || echo "rtk install failed, continuing"
   '';
@@ -73,7 +76,7 @@ in
     $DRY_RUN_CMD mkdir -p "$PI_DIR" \
       && ${pkgs.curl}/bin/curl -fsSL \
         "https://github.com/earendil-works/pi/releases/download/v0.84.4/pi-darwin-x64.tar.gz" \
-        | ${pkgs.gnutar}/bin/tar -xz -C "$PI_DIR" \
+        | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.gzip}/bin/gzip -x -C "$PI_DIR" \
       && ${pkgs.coreutils}/bin/ln -sfn "$PI_DIR/pi/pi" "$HOME/.local/bin/pi" \
       && ${pkgs.coreutils}/bin/chmod +x "$PI_DIR/pi/pi" \
       || echo "pi-coding-agent install failed, continuing"
