@@ -90,6 +90,18 @@ in
     initContent = lib.mkMerge [
       ''
         bindkey '^f' autosuggest-accept
+
+        # home-manager prepends ~/.local/bin to PATH inside hm-session-vars.sh,
+        # but that file is guarded by $__HM_SESS_VARS_SOURCED. If the login
+        # session's env captured that guard var before a rebuild that changed
+        # sessionPath (e.g. the commit that added ~/.local/bin for rtk), every
+        # child shell skips the file and the new entry never lands until a full
+        # logout. Re-assert it here unconditionally - .zshrc is not guarded, so
+        # this runs on every interactive shell regardless of the stale var.
+        case ":$PATH:" in
+          *":$HOME/.local/bin:"*) ;;
+          *) export PATH="$HOME/.local/bin:$PATH" ;;
+        esac
       ''
       # zoxide's enableZshIntegration doesn't control where its init line
       # lands in .zshrc - home-manager splices it in at a fixed position
