@@ -175,10 +175,10 @@ in
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
 
   # RTK (Rust Token Killer) reference, shared across agents. Tracked file
-  # in this repo; written by `rtk init -g --no-patch` after Homebrew installs
-  # the formula. Claude Code auto-loads it via the @RTK.md reference that
-  # `rtk init` adds; pi/Codex/opencode can read it on demand from the same
-  # AGENTS.md directory.
+  # in this repo; originally seeded by `rtk init -g --no-patch` after the
+  # installRtk hook above fetches the release binary, hand-maintained since.
+  # Claude Code auto-loads it via the @RTK.md reference that `rtk init` adds;
+  # pi/Codex/opencode can read it on demand from the same AGENTS.md directory.
   home.file.".claude/RTK.md".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/RTK.md";
   home.file.".codex/RTK.md".source =

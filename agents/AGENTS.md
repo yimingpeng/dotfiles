@@ -23,7 +23,7 @@ These rules apply across all AI agent tools (Claude Code, Codex, Kilo, OpenCode,
 ## Principles
 
 - When making technical decisions, do not weight development cost heavily. Prefer quality, simplicity, robustness, scalability, and long-term maintainability.
-- When the `rtk` binary is on PATH (Rust Token Killer, installed via Homebrew in `nix/configuration.nix`), prefer `rtk <cmd>` over plain `<cmd>` for verbose shell commands: `git status/log/diff`, `cargo test`, `jest`, `vitest`, `pnpm list`, `pytest`, etc. RTK rewrites the output into a compact form before you read it. Fall back to the plain command if rtk is missing or errors. Full command list in `RTK.md`.
+- When the `rtk` binary is on PATH (Rust Token Killer, installed by the `installRtk` `home.activation` hook in `nix/home.nix`, which downloads the GitHub release binary into `~/.local/bin`), prefer `rtk <cmd>` over plain `<cmd>` for verbose shell commands: `git status/log/diff`, `cargo test`, `jest`, `vitest`, `pnpm list`, `pytest`, etc. RTK rewrites the output into a compact form before you read it. Fall back to the plain command if rtk is missing or errors. Full command list in `RTK.md`.
 
 ## Tone
 
