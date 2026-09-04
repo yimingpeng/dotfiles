@@ -36,7 +36,10 @@ The repo contains all my dotfiles
   - `agents/RTK.md`: RTK (Rust Token Killer) command reference, symlinked into
     `~/.claude/RTK.md`, `~/.codex/RTK.md`, `~/.config/opencode/RTK.md`, and
     `~/.pi/agent/RTK.md`. Generated (and regenerated on upgrade) by
-    `rtk init -g --no-patch`
+    `rtk init -g --no-patch`. Transparent command rewriting is wired for two
+    agents: Claude Code via the `rtk hook claude` `PreToolUse` hook in
+    `.claude/settings.json`, and pi via `agents/.pi/agent/extensions/rtk.ts`
+    (delegates to `rtk rewrite` on every `bash` tool call)
   - `agents/vendor`: Full upstream skill sets, tracked as `git subtree` (see
     [Updating vendored skills](#updating-vendored-skills))
   - `agents/.pi`: pi settings, models, themes, and extensions
@@ -283,3 +286,11 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   The transparent-rewrite `PreToolUse` Bash hook (`rtk hook claude`) lives in
   the local-only `.claude/settings.json` (gitignored), so it must be re-added
   with that command on a fresh machine.
+- By 04/09/2026, enabled RTK transparent rewriting for the pi coding agent too.
+  `rtk init --agent pi` generated `agents/.pi/agent/extensions/rtk.ts`, a
+  self-contained pi extension that intercepts every `bash` tool call and runs
+  it through `rtk rewrite`. The extensions dir is symlinked to
+  `~/.pi/agent/extensions`, so pi auto-loads it on next start (run the
+  home-manager rebuild first if `~/.pi/agent/extensions` is still a store
+  copy). Before this, pi only had the `agents/RTK.md` reference and the
+  `AGENTS.md` rule - advisory, not enforced.
