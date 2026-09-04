@@ -21,6 +21,7 @@ These rules apply across all AI agent tools (Claude Code, Codex, Kilo, OpenCode,
 
 ## Principles
 - When making technical decisions, do not weight development cost heavily. Prefer quality, simplicity, robustness, scalability, and long-term maintainability.
+- When the `rtk` binary is on PATH (Rust Token Killer, installed via Homebrew in `nix/configuration.nix`), prefer `rtk <cmd>` over plain `<cmd>` for verbose shell commands: `git status/log/diff`, `cargo test`, `jest`, `vitest`, `pnpm list`, `pytest`, etc. RTK rewrites the output into a compact form before you read it. Fall back to the plain command if rtk is missing or errors. Full command list in `RTK.md`.
 
 ## Tone
 - Default to terse: the fewest sentences that fully answer the question. No preamble ("I'll now..."), no restating the plan back, no trailing recap - unless the user asks for detail or a summary.
@@ -63,3 +64,5 @@ Rules:
 
 Not lazy about: understanding the problem (read it fully and trace the real flow before picking a rung, a small diff you don't understand is just laziness dressed up as efficiency), input validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs (the platform is never the spec ideal, a clock drifts, a sensor reads off), anything explicitly requested. Lazy code without its check is unfinished: non-trivial logic leaves ONE runnable check behind, the smallest thing that fails if the logic breaks (an assert-based demo/self-check or one small test file; no frameworks, no fixtures). Trivial one-liners need no test.
 <!-- END VENDORED: ponytail -->
+
+@RTK.md

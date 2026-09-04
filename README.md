@@ -33,6 +33,10 @@ The repo contains all my dotfiles
     (e.g. `writing-mentor`, `talk-workflow`) live directly here as folders;
     every other entry is a symlink into `agents/vendor/`. Symlinked into
     `~/.claude/skills`, `~/.pi/agent/skills`, and `~/.codex/skills/dotfiles`
+  - `agents/RTK.md`: RTK (Rust Token Killer) command reference, symlinked into
+    `~/.claude/RTK.md`, `~/.codex/RTK.md`, `~/.config/opencode/RTK.md`, and
+    `~/.pi/agent/RTK.md`. Generated (and regenerated on upgrade) by
+    `rtk init -g --no-patch`
   - `agents/vendor`: Full upstream skill sets, tracked as `git subtree` (see
     [Updating vendored skills](#updating-vendored-skills))
   - `agents/.pi`: pi settings, models, themes, and extensions
@@ -127,6 +131,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `herdr` | Terminal session manager with agents panel |
 | `gh` | GitHub CLI |
 | `pi-coding-agent` | AI coding agent (pi) |
+| `rtk` | Rust Token Killer - compacts verbose shell output for agents |
 | `openssl@3` | TLS/SSL library |
 | `ca-certificates` | Root CA certificates |
 
@@ -267,3 +272,14 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   inside pCloud/iCloud FUSE directories that spawn sometimes overran
   starship's default 500ms budget, dumping a `[WARN] ... timed out` block into
   the terminal and dropping the path segment from the prompt.
+- By 03/09/2026, added `rtk` (Rust Token Killer) as a Homebrew formula in
+  `nix/configuration.nix`, a shared `agents/RTK.md` reference symlinked into all
+  four agent config dirs, and a rule in `agents/AGENTS.md` telling agents to
+  prefer `rtk <cmd>` for verbose commands (`git status/log/diff`, test runners).
+  Cherry-picked from the `imac-version` branch; the Intel-only GitHub-release
+  install workaround from that branch was left out since this machine is arm64
+  and can use the Homebrew bottle. `rtk init -g --no-patch` has been run: it
+  populated `agents/RTK.md` and appended an `@RTK.md` line to `agents/AGENTS.md`.
+  The transparent-rewrite `PreToolUse` Bash hook (`rtk hook claude`) lives in
+  the local-only `.claude/settings.json` (gitignored), so it must be re-added
+  with that command on a fresh machine.

@@ -128,6 +128,18 @@ in
   home.file.".config/opencode/AGENTS.md".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
 
+  # RTK (Rust Token Killer) reference, shared across agents. Tracked file
+  # in this repo; written by `rtk init -g --no-patch` after Homebrew installs
+  # the formula. Claude Code auto-loads it via the @RTK.md reference that
+  # `rtk init` adds; pi/Codex/opencode can read it on demand from the same
+  # AGENTS.md directory.
+  home.file.".claude/RTK.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/RTK.md";
+  home.file.".codex/RTK.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/RTK.md";
+  home.file.".config/opencode/RTK.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/RTK.md";
+
   # Agent skills, shared across agents.
   # agents/skills holds symlinks to the skills that are switched ON; the full
   # upstream sets live in agents/vendor/ as git subtrees. Enable another skill
@@ -145,6 +157,8 @@ in
   # pi agent
   home.file.".pi/agent/AGENTS.md".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/AGENTS.md";
+  home.file.".pi/agent/RTK.md".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/RTK.md";
   home.file.".pi/agent/skills".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/agents/skills";
 
