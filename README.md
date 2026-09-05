@@ -182,6 +182,19 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 ## Change Logs
 
+- By 05/09/2026, bumped `pi-coding-agent` from 0.84.4 to 0.85.1 (latest
+  stable) in the `installPiCodingAgent` activation hook in `nix/home.nix`,
+  re-downloaded the `pi-darwin-x64.tar.gz` release into
+  `~/.local/share/pi-coding-agent/0.85.1/`, and updated the `pi` symlink to
+  point at the new install. The 0.84.4 install dir was removed. Also
+  bumped `lastChangelogVersion` in `~/.pi/agent/settings.json` so pi doesn't
+  re-prompt for the 0.85.x changelog on next launch. The
+  `x-opencode-session` header that OpenCode's email warned about (will
+  error after 09/06) has been sent on every opencode/opencode-go request
+  since PR #4847 landed in 0.84.4 — verified at the code level in
+  `getSessionHeaders()` and confirmed live via `pi auth check
+  --provider opencode-go` returning `ready` plus a real
+  `--provider opencode-go` completion succeeding.
 - By 31/08/2025, I decided to switch back to `iterm2`, enjoying its out-of-box
   experience.
 - By 09/08/2026, migrated system setup to `nix-darwin` + `home-manager` (see
