@@ -151,6 +151,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `nodejs_22` | Node.js 22 runtime |
 | `codex` | OpenAI Codex CLI (the `codex` command; the Codex app is separate) |
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
+| `rclone` | CLI sync/upload to cloud storage (used for pCloud) |
+| `timg` | Terminal image/video viewer |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
 | `nixfmt` | Nix formatter (invoked by `nil_ls`) |
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
@@ -262,6 +264,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   Also confirmed the vendored `ponytail` and `mattpocock-skills` skill sets
   (`agents/vendor/`) are frozen `git subtree` snapshots, not auto-updating -
   see "Updating vendored skills" above for the manual refresh commands.
+- By 06/09/2026, added `timg` (terminal image/video viewer) to `home.packages`
+  in `nix/home.nix`. It ships in nixpkgs, so no Homebrew formula is needed.
+  Also backfilled the missing `rclone` row in the README's home-manager
+  packages table.
 - By 28/08/2026, added the `talk-workflow` skill, a first-party talk coach
   distilled from the `agent-talk-workflow` repo into a single `SKILL.md` plus
   one lazily-loaded `references/sources.md` (provenance honesty, the
