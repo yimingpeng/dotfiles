@@ -156,6 +156,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `nodejs_22` | Node.js 22 runtime |
 | `codex` | OpenAI Codex CLI (the `codex` command; the Codex app is separate) |
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
+| `rclone` | CLI sync/upload to cloud storage (used for pCloud) |
+| `timg` | Terminal image/video viewer |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
 | `nixfmt` | Nix formatter (invoked by `nil_ls`) |
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
@@ -275,6 +277,21 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   rebuild needed - it's live in `~/.claude/skills` immediately. It's
   invoked as `/teach`, not `/learn` (`disable-model-invocation: true` means
   it only runs on explicit invocation).
+- By 24/08/2026, added the DIDA CLI (`@suibiji/dida-cli`, binary `dida`) -
+  this is the CLI actually documented on TickTick/Dida365's own help site
+  (help.dida365.com), not `@ticktick/ticktick-cli` as first assumed. Like
+  `freebuff`, it has no nixpkgs/Homebrew package and ships frequent point
+  releases, so it's installed via a second `home.activation` hook in
+  `nix/home.nix` instead of a pinned `buildNpmPackage` derivation. After
+  rebuilding, run `dida auth login` once to authenticate (browser OAuth) -
+  that step is interactive and intentionally not scripted here.
+  Also confirmed the vendored `ponytail` and `mattpocock-skills` skill sets
+  (`agents/vendor/`) are frozen `git subtree` snapshots, not auto-updating -
+  see "Updating vendored skills" above for the manual refresh commands.
+- By 06/09/2026, added `timg` (terminal image/video viewer) to `home.packages`
+  in `nix/home.nix`. It ships in nixpkgs, so no Homebrew formula is needed.
+  Also backfilled the missing `rclone` row in the README's home-manager
+  packages table.
 - By 28/08/2026, added the `talk-workflow` skill, a first-party talk coach
   distilled from the `agent-talk-workflow` repo into a single `SKILL.md` plus
   one lazily-loaded `references/sources.md` (provenance honesty, the
