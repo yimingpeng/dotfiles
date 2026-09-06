@@ -77,6 +77,7 @@
       "bitwarden"
       "android-studio"
       "copilot-cli"
+      "karabiner-elements"
     ];
   };
 }

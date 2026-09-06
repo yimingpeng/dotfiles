@@ -118,6 +118,11 @@ in
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/herdr";
 
+  # Karabiner-Elements config (Filco 68 remaps: CapsLock -> LeftCtrl, etc.).
+  # Lives in ~/Library/Application Support/Karabiner/karabiner.json, not ~/.config.
+  home.file."Library/Application Support/Karabiner/karabiner.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/karabiner/karabiner.json";
+
   home.file.".claude/settings.json".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/.claude/settings.json";
 

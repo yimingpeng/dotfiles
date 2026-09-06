@@ -12,7 +12,9 @@ The repo contains all my dotfiles
   nix/python/typescript/markdown (`nil_ls` comes from home-manager, not
   Mason)
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is
-  suitable for my filco 68 keyboard
+  suitable for my filco 68 keyboard. Installed as the `karabiner-elements`
+  Homebrew cask via `nix/configuration.nix`, and the config is symlinked to
+  `~/Library/Application Support/Karabiner/karabiner.json` via `nix/home.nix`
 - `starship.toml`: This is for configuring the look-and-feel for the prompt
 - `vscode`: This folder includes all the configs for my `vscode`
 - `herdr`: Config for `herdr`, a terminal session manager with tmux-style pane
@@ -124,6 +126,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | App | Purpose | Config |
 | --- | --- | --- |
 | `wezterm` | Terminal emulator | `wezterm/` |
+| `karabiner-elements` | Keyboard remapper (Filco 68 -> CapsLock/Ctrl/etc.) | `karabiner/` |
 | `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
 
 ### Homebrew brews (CLI)
@@ -300,3 +303,9 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   home-manager rebuild first if `~/.pi/agent/extensions` is still a store
   copy). Before this, pi only had the `agents/RTK.md` reference and the
   `AGENTS.md` rule - advisory, not enforced.
+- By 04/09/2026, wired the existing `karabiner/` config into nix. Added the
+  `karabiner-elements` Homebrew cask to `nix/configuration.nix`, and a
+  `home.file."Library/Application Support/Karabiner/karabiner.json"` symlink
+  in `nix/home.nix` pointing at `karabiner/karabiner.json` in this repo. The
+  config previously lived on disk but wasn't tracked by darwin-rebuild, so a
+  fresh machine (or a nix rebuild) would have left it untouched.
