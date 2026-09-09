@@ -133,9 +133,6 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | Tool | Purpose |
 | --- | --- |
 | `zoxide` | Smarter `cd` |
-| `herdr` | Terminal session manager with agents panel |
-| `gh` | GitHub CLI |
-| `pi-coding-agent` | AI coding agent (pi) |
 | `openssl@3` | TLS/SSL library |
 | `ca-certificates` | Root CA certificates |
 | `tailscale` | VPN mesh networking |
@@ -153,15 +150,28 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `fd` | Fast find |
 | `fzf` | Fuzzy finder |
 | `jq` | JSON on the command line |
+| `gh` | GitHub CLI (no x86_64-darwin Homebrew bottle for new versions, so pulled from nixpkgs instead) |
 | `nodejs_22` | Node.js 22 runtime |
 | `codex` | OpenAI Codex CLI (the `codex` command; the Codex app is separate) |
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
 | `rclone` | CLI sync/upload to cloud storage (used for pCloud) |
 | `timg` | Terminal image/video viewer |
+| `herdr` | Terminal session manager with agents panel — installed via the [`herdrdev/herdr-nix`](https://github.com/herdrdev/herdr-nix) flake input (no Homebrew x86_64-darwin bottle since 0.9.0; prebuilt-binary derivation, Cachix-cached) |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
 | `nixfmt` | Nix formatter (invoked by `nil_ls`) |
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
 | `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
+
+### GitHub release binaries (via activation hooks)
+
+Downloaded into `~/.local/bin` by `home.activation` hooks on every rebuild.
+Used for tools with no Homebrew x86_64-darwin bottle and no viable source
+build on this Intel Mac.
+
+| Tool | Purpose |
+| --- | --- |
+| `rtk` | Rust Token Killer - rewrites verbose shell command output into a compact form before the LLM reads it |
+| `pi-coding-agent` | AI coding agent (pi) |
 
 ### npm-global tools (via activation hook)
 
@@ -184,6 +194,33 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 ## Change Logs
 
+- By 09/09/2026, moved `herdr` off Homebrew. The 0.9.0 release dropped the
+  x86_64-darwin bottle (Homebrew Tier 3 warning during `brew bundle`:
+  "herdr: no bottle available!"), matching the same situation already
+  handled for `gh`, `pi-coding-agent`, and `rtk`. Removed `herdr` from
+  the `brews` list in `nix/configuration.nix` and added it as a
+  `home.packages` entry via the
+  [`herdrdev/herdr-nix`](https://github.com/herdrdev/herdr-nix) flake
+  input — the official packaging of herdr's prebuilt release binary as a
+  Nix derivation (no Rust/Zig toolchain pulled in; Cachix-cached for
+  x86_64-darwin). Added `nixConfig.extra-substituters` and the matching
+  public key in `nix/flake.nix` so the Cachix cache is honored
+  automatically, and `home-manager.extraSpecialArgs = { inherit inputs; }`
+  so `nix/home.nix` can read flake inputs. The upstream `herdr-nix`
+  package.nix currently pins v0.8.0; their `update-herdr` bot hasn't
+  merged a 0.9.0 bump yet (last PR was 0.8.0 on 2026-08-04), so a
+  `let herdr = inputs.herdr-nix.packages.x86_64-darwin.herdr.overrideAttrs
+  (_: { version = "0.9.0"; src = pkgs.fetchurl { url = "...";
+  sha256 = "sha256-0MkgsqEmp0gJ+hSRQRyaCXpEeGysnCylG4GKmVWBzxY="; }; })`
+  in `nix/home.nix` rides 0.9.0 today. Drop the override once upstream
+  catches up. The existing Homebrew install at
+  `/usr/local/Cellar/herdr/0.8.2` and the `/usr/local/bin/herdr` symlink
+  get removed by `cleanup = "zap"` on the next rebuild. Also corrected
+  the README's "Homebrew brews" table, which still listed `gh`,
+  `pi-coding-agent`, and `herdr` as Homebrew installs (they all moved
+  off Homebrew earlier; `gh` and `herdr` belong under home-manager
+  packages, `rtk`/`pi-coding-agent` under the "GitHub release binaries"
+  section).
 - By 05/09/2026, bumped `pi-coding-agent` from 0.84.4 to 0.85.1 (latest
   stable) in the `installPiCodingAgent` activation hook in `nix/home.nix`,
   re-downloaded the `pi-darwin-x64.tar.gz` release into

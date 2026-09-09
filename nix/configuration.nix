@@ -52,12 +52,18 @@ with lib;
     onActivation.upgrade = true; # actually upgrade outdated brews/casks on every activation
     onActivation.extraFlags = [ "--force" ];
     # Intel Mac (x86_64-darwin) — Homebrew dropped x86_64 macOS bottles for
-    # newer versions of gh, openssl@3, pi-coding-agent, and rtk. Source builds
-    # aren't viable here either (rtk pulls in llvm@22 + rust, multi-hour).
+    # newer versions of gh, herdr, openssl@3, pi-coding-agent, and rtk. Source
+    # builds aren't viable here either (rtk pulls in llvm@22 + rust, multi-hour).
     # So:
     #   - gh: moved to nixpkgs (home.packages in nix/home.nix) — cache-backed
     #     for x86_64-darwin, no Tier 3 exposure. `cleanup = "zap"` removes the
     #     old Homebrew copy on the next rebuild.
+    #   - herdr: installed via the `herdrdev/herdr-nix` flake input (see
+    #     flake.nix and the `herdr` let-binding in nix/home.nix). That flake
+    #     wraps herdr's prebuilt GitHub release binary as a derivation and
+    #     has Cachix-cached builds for x86_64-darwin, so no Rust/Zig
+    #     toolchain gets pulled into the closure. `cleanup = "zap"` removes
+    #     the old Homebrew copy on the next rebuild.
     #   - pi-coding-agent: downloaded from GitHub releases into ~/.local/
     #     by a home.activation hook in nix/home.nix
     #   - rtk: same — GitHub release binary into ~/.local/bin/
@@ -66,7 +72,6 @@ with lib;
     #     doesn't try to upgrade it to a version with no x86_64 bottle.
     brews = [
       "zoxide"
-      "herdr"
       "ca-certificates"
       "openssl@3"
       "tailscale"

@@ -1,7 +1,27 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
+
+  # herdr has no nixpkgs/x86_64-darwin Homebrew bottle (Tier 3 dropped it in
+  # 0.9.0). The official `herdrdev/herdr-nix` flake wraps herdr's prebuilt
+  # GitHub release binary in a derivation - hash-verified, Cachix-cached,
+  # no Rust/Zig toolchain pulled into the closure (which is what made the
+  # upstream source-build path unviable on this Intel Mac).
+  #
+  # herdr-nix's own package.nix currently pins v0.8.0; the upstream
+  # `update-herdr` bot hasn't merged a 0.9.0 bump yet (last bump merged
+  # 2026-08-04 for 0.8.0; the bot runs but no PR is open). Override
+  # version+hash here to ride 0.9.0 today; drop the override (or the
+  # entire herdr-nix input) once upstream catches up and remove the
+  # explicit Cachix substituter entry from flake.nix too.
+  herdr = inputs.herdr-nix.packages.x86_64-darwin.herdr.overrideAttrs (_: {
+    version = "0.9.0";
+    src = pkgs.fetchurl {
+      url = "https://github.com/herdrdev/herdr/releases/download/v0.9.0/herdr-macos-x86_64";
+      sha256 = "sha256-0MkgsqEmp0gJ+hSRQRyaCXpEeGysnCylG4GKmVWBzxY=";
+    };
+  });
 in
 
 {
@@ -26,6 +46,7 @@ in
     uv          # python package manager; `uv tool install` puts tools in ~/.local/bin
     rclone      # CLI sync/upload to cloud storage (used for pCloud instead of the memory-hungry pCloud app)
     timg        # terminal image/video viewer
+    herdr       # terminal session manager with agents panel - via herdr-nix flake (see let-binding above)
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
