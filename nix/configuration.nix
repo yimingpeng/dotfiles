@@ -78,6 +78,7 @@
       "android-studio"
       "copilot-cli"
       "karabiner-elements"
+      "orbstack"      # Docker Desktop replacement; free for personal use, $8/mo for work. Bundles docker CLI + compose + buildx.
     ];
   };
 }
