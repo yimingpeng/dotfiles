@@ -29,7 +29,13 @@ in
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
   home.sessionVariables.NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
-  home.sessionPath = [ "${config.home.homeDirectory}/.npm-global/bin" ];
+  home.sessionPath = [
+    "${config.home.homeDirectory}/.npm-global/bin"
+    # OrbStack CLI shims (docker, docker-buildx, docker-compose, kubectl).
+    # Created by the orbstack Homebrew cask on first launch; symlinks live
+    # here so the OrbStack-built tools shadow Docker Desktop's /usr/local/bin/docker.
+    "${config.home.homeDirectory}/.orbstack/bin"
+  ];
 
   # freebuff has no nixpkgs/Homebrew package, only `npm install -g freebuff`.
   # Installed via activation hook (not a pinned buildNpmPackage derivation)

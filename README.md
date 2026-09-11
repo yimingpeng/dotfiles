@@ -128,6 +128,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `wezterm` | Terminal emulator | `wezterm/` |
 | `karabiner-elements` | Keyboard remapper (Filco 68 -> CapsLock/Ctrl/etc.) | `karabiner/` |
 | `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
+| `orbstack` | Container runtime (Docker Desktop replacement; bundles `docker`, `docker compose`, `buildx`). Free for personal use, paid license required for commercial/work use | `~/.orbstack/bin/` on PATH via `nix/home.nix` |
 
 ### Homebrew brews (CLI)
 
@@ -309,3 +310,15 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   in `nix/home.nix` pointing at `karabiner/karabiner.json` in this repo. The
   config previously lived on disk but wasn't tracked by darwin-rebuild, so a
   fresh machine (or a nix rebuild) would have left it untouched.
+- By 12/09/2026, replaced Docker Desktop with OrbStack. Added the `orbstack`
+  Homebrew cask to `nix/configuration.nix` (Docker Desktop was never tracked
+  here), and put `~/.orbstack/bin` on `home.sessionPath` in `nix/home.nix` so
+  the OrbStack-built `docker` / `docker compose` / `docker-buildx` / `kubectl`
+  shims take precedence over Docker Desktop's leftover symlinks in
+  `/usr/local/bin`. Removed Docker.app, `~/Library/.../Docker*`,
+  `~/.docker`, the `com.docker.vmnetd` / `com.docker.socket` privileged
+  helpers + launch daemons, and the orphaned `/usr/local/bin/docker*`
+  symlinks. After removal, recreated the `orbstack` Docker context
+  (`docker context create orbstack --docker
+  "host=unix:///Users/yimingpeng/.orbstack/run/docker.sock"`), since deleting
+  `~/.docker` also wiped the auto-registered context.
