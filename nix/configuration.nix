@@ -49,15 +49,29 @@ with lib;
     enable = true;
     onActivation.cleanup = "zap"; # remove anything not listed here
     onActivation.autoUpdate = true; # refresh brew's package index (does not upgrade installed packages)
-    onActivation.upgrade = true; # actually upgrade outdated brews/casks on every activation
-    onActivation.extraFlags = [ "--force" ];
+    # onActivation.upgrade is left at its default (false): darwin-rebuild only
+    # ensures listed brews/casks are installed, it never force-upgrades them.
+    # Upgrading is a manual, explicit `brew upgrade` — decoupled from Nix
+    # rebuilds so a single Tier-3 bottle-less release (see below) can't abort
+    # the whole `darwin-rebuild switch`. This used to be
+    # `onActivation.upgrade = true` + `extraFlags = [ "--force" ]`, which is
+    # exactly what turned the gh/herdr/rtk/pi-coding-agent/tailscale bottle
+    # failures below into hard failures of the entire system rebuild instead
+    # of just a failed `brew upgrade`.
+    #
     # Intel Mac (x86_64-darwin) — Homebrew dropped x86_64 macOS bottles for
-    # newer versions of gh, herdr, openssl@3, pi-coding-agent, and rtk. Source
-    # builds aren't viable here either (rtk pulls in llvm@22 + rust, multi-hour).
-    # So:
+    # newer versions of gh, herdr, openssl@3, pi-coding-agent, rtk, and
+    # tailscale. Source builds aren't viable here either (rtk pulls in
+    # llvm@22 + rust, multi-hour). So:
     #   - gh: moved to nixpkgs (home.packages in nix/home.nix) — cache-backed
     #     for x86_64-darwin, no Tier 3 exposure. `cleanup = "zap"` removes the
     #     old Homebrew copy on the next rebuild.
+    #   - tailscale: moved to nix-darwin's `services.tailscale` module below
+    #     (pkgs.tailscale from nixpkgs, cache-backed for x86_64-darwin, same
+    #     reasoning as gh) instead of pinning the Homebrew formula forever —
+    #     a permanent pin means never getting security fixes as Tailscale's
+    #     control plane moves on. `cleanup = "zap"` removes the old Homebrew
+    #     copy/service on the next rebuild.
     #   - herdr: installed via the `herdrdev/herdr-nix` flake input (see
     #     flake.nix and the `herdr` let-binding in nix/home.nix). That flake
     #     wraps herdr's prebuilt GitHub release binary as a derivation and
@@ -74,7 +88,6 @@ with lib;
       "zoxide"
       "ca-certificates"
       "openssl@3"
-      "tailscale"
       "pre-commit"
       "kubeconform"
       "rsync"
@@ -113,4 +126,10 @@ with lib;
           || echo "brew pin openssl@3 failed (non-fatal), continuing"
     '';
   };
+
+  # Tailscale via nix-darwin's native module (pkgs.tailscale from nixpkgs)
+  # instead of the Homebrew formula — see the brews comment above for why.
+  # This installs the CLI and manages the `com.tailscale.tailscaled` launchd
+  # daemon itself, replacing brew's `tailscale` service of the same name.
+  services.tailscale.enable = true;
 }
