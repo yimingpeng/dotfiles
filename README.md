@@ -31,10 +31,13 @@ The repo contains all my dotfiles
     `~/.codex/AGENTS.md`, `~/.config/opencode/AGENTS.md`, and
     `~/.pi/agent/AGENTS.md`. Includes the vendored Ponytail ruleset in a marked
     block
-  - `agents/skills`: The skills that are switched **on**. First-party skills
+  - `agents/skills`: The skills that are switched **on** (currently just the
+    ones actually used - see `agents/skills-disabled/`). First-party skills
     (e.g. `writing-mentor`, `talk-workflow`) live directly here as folders;
     every other entry is a symlink into `agents/vendor/`. Symlinked into
     `~/.claude/skills`, `~/.pi/agent/skills`, and `~/.codex/skills/dotfiles`
+  - `agents/skills-disabled`: Skills parked here instead of deleted - `git mv`
+    back into `agents/skills/` to re-enable, no rebuild needed
   - `agents/RTK.md`: RTK (Rust Token Killer) command reference, symlinked into
     `~/.claude/RTK.md`, `~/.codex/RTK.md`, `~/.config/opencode/RTK.md`, and
     `~/.pi/agent/RTK.md`. Generated (and regenerated on upgrade) by
@@ -73,8 +76,11 @@ ln -sfn ../vendor/mattpocock-skills/skills/engineering/wizard \
         ~/.dotfiles/agents/skills/wizard
 ```
 
-Disable one: delete the symlink. Neither needs a rebuild - only adding a brand
-new *path* to `home.nix` does.
+Disable one: move it to `agents/skills-disabled/` instead of deleting it
+(`git mv agents/skills/<name> agents/skills-disabled/<name>`) - the relative
+symlink targets still resolve since it's a sibling of `agents/skills/`, and
+re-enabling later is just the same `git mv` in reverse. Neither direction
+needs a rebuild - only adding a brand new *path* to `home.nix` does.
 
 Claude Code only looks **one level deep** for `SKILL.md`, which is why
 `agents/skills/` is flat and the categorised upstream tree stays in
@@ -322,3 +328,14 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   (`docker context create orbstack --docker
   "host=unix:///Users/yimingpeng/.orbstack/run/docker.sock"`), since deleting
   `~/.docker` also wiped the auto-registered context.
+- By 16/09/2026, ran `/skill-doctor` and found 25 of the 37 skills wired into
+  `agents/skills` had 0 uses since day one in this project, adding pure
+  system-prompt overhead every session. `/skill-doctor`'s usage counts are
+  per-project though - `no-mistakes` showed 0 uses here but turned out to be
+  actively used in the `firstmate` repo (visible via its worktree dirs and
+  session history under `~/.claude/projects/`), so it stayed put. Moved the
+  other 24 (all vendored symlinks, cross-checked against every other
+  project's history first) into a new `agents/skills-disabled/` archive
+  directory instead of deleting them - `git mv` back into `agents/skills/` to
+  re-enable, no `home.nix` change or rebuild needed either way. The 13 skills
+  with confirmed uses (12 from this project plus `no-mistakes`) stay enabled.
