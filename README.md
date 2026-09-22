@@ -134,6 +134,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `wezterm` | Terminal emulator | `wezterm/` |
 | `karabiner-elements` | Keyboard remapper (Filco 68 -> CapsLock/Ctrl/etc.) | `karabiner/` |
 | `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
+| `telegram` | Telegram messenger (official native macOS client, not the cross-platform `telegram-desktop` Qt build) | n/a - app-managed |
 | `orbstack` | Container runtime (Docker Desktop replacement; bundles `docker`, `docker compose`, `buildx`). Free for personal use, paid license required for commercial/work use | `~/.orbstack/bin/` on PATH via `nix/home.nix` |
 
 ### Homebrew brews (CLI)
@@ -339,3 +340,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   directory instead of deleting them - `git mv` back into `agents/skills/` to
   re-enable, no `home.nix` change or rebuild needed either way. The 13 skills
   with confirmed uses (12 from this project plus `no-mistakes`) stay enabled.
+- By 22/09/2026, added the `telegram` Homebrew cask to `nix/configuration.nix`.
+  Picked `telegram` (Telegram for macOS, the native Swift client) over
+  `telegram-desktop`, which is the cross-platform Qt build - the native one
+  matches the rest of the Mac-first setup. No config tracked here; Telegram
+  keeps its settings and session in its own container.

@@ -78,6 +78,7 @@
       "android-studio"
       "copilot-cli"
       "karabiner-elements"
+      "telegram"      # official native macOS client (not the Qt telegram-desktop build)
       "orbstack"      # Docker Desktop replacement; free for personal use, $8/mo for work. Bundles docker CLI + compose + buildx.
     ];
   };
