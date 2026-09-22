@@ -90,3 +90,4 @@ nvim/lazy-lock.json
 herdr/.plugins.lock
 herdr/session.json
 .claude/
+agents/skills/synced/
