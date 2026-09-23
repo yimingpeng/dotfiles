@@ -117,7 +117,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | App | Purpose | Config |
 | --- | --- | --- |
 | `wezterm` | Terminal emulator | `wezterm/` |
-| `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
+| `claude-code@latest` | Claude Code CLI (tracks Homebrew's "latest" channel, not "stable", so it stays current) | `agents/`, `home.nix` aliases |
 | `docker-desktop` | Container runtime + GUI | |
 | `orbstack` | Lightweight Docker/VM runtime | |
 | `alfred` | Launcher / Spotlight replacement | |
@@ -337,3 +337,10 @@ build on this Intel Mac.
   template pipeline, no checker script. Also corrected the README's
   `agents/skills` description, which said every entry is a symlink into
   `agents/vendor/`.
+- By 23/09/2026, switched the `claude-code` Homebrew cask to
+  `claude-code@latest` in `nix/configuration.nix`. The plain `claude-code`
+  cask tracks Homebrew's "stable" livecheck channel, which lags behind the
+  "latest" channel that `claude-code@latest` tracks - `onActivation.upgrade`
+  works against a slower-moving version otherwise. Cherry-picked from the
+  `main` branch. The two casks `conflicts_with` each other, so the old cask
+  needs a manual `brew uninstall --cask claude-code` before the next rebuild.
