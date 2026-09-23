@@ -64,7 +64,7 @@
     ];
     casks = [
       "wezterm"
-      "claude-code"
+      "claude-code@latest" # tracks Homebrew's "latest" release channel (vs "stable" for plain claude-code)
       "alfred"
       "codexbar"
       "superwhisper"

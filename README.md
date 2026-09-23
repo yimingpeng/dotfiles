@@ -133,7 +133,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | --- | --- | --- |
 | `wezterm` | Terminal emulator | `wezterm/` |
 | `karabiner-elements` | Keyboard remapper (Filco 68 -> CapsLock/Ctrl/etc.) | `karabiner/` |
-| `claude-code` | Claude Code CLI | `agents/`, `home.nix` aliases |
+| `claude-code@latest` | Claude Code CLI (tracks Homebrew's "latest" channel, not "stable", so it stays current) | `agents/`, `home.nix` aliases |
 | `telegram` | Telegram messenger (official native macOS client, not the cross-platform `telegram-desktop` Qt build) | n/a - app-managed |
 | `orbstack` | Container runtime (Docker Desktop replacement; bundles `docker`, `docker compose`, `buildx`). Free for personal use, paid license required for commercial/work use | `~/.orbstack/bin/` on PATH via `nix/home.nix` |
 
@@ -345,3 +345,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `telegram-desktop`, which is the cross-platform Qt build - the native one
   matches the rest of the Mac-first setup. No config tracked here; Telegram
   keeps its settings and session in its own container.
+- By 23/09/2026, switched the `claude-code` Homebrew cask to
+  `claude-code@latest` in `nix/configuration.nix`. The plain `claude-code`
+  cask tracks Homebrew's "stable" livecheck channel, which lags behind the
+  "latest" channel that `claude-code@latest` tracks - `onActivation.upgrade`
+  was working as intended, just against a slower-moving version. The two
+  casks `conflicts_with` each other, so the old cask needs a manual
+  `brew uninstall --cask claude-code` before the next rebuild.
