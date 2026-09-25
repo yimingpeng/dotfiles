@@ -60,7 +60,7 @@ with lib;
     # of just a failed `brew upgrade`.
     #
     # Intel Mac (x86_64-darwin) — Homebrew dropped x86_64 macOS bottles for
-    # newer versions of gh, herdr, openssl@3, pi-coding-agent, rtk, and
+    # newer versions of gh, herdr, openssl@3, pi-coding-agent, rsync, rtk, and
     # tailscale. Source builds aren't viable here either (rtk pulls in
     # llvm@22 + rust, multi-hour). So:
     #   - gh: moved to nixpkgs (home.packages in nix/home.nix) — cache-backed
@@ -84,6 +84,8 @@ with lib;
     #   - openssl@3: stays here because pre-commit/rsync/pi-coding-agent
     #     etc. link against the Homebrew copy. Pinned below so brew bundle
     #     doesn't try to upgrade it to a version with no x86_64 bottle.
+    #   - rsync: stays here (system rsync is too old for some tools), pinned
+    #     below for the same reason as openssl@3.
     brews = [
       "zoxide"
       "ca-certificates"
@@ -109,21 +111,23 @@ with lib;
     ];
   };
 
-  # Pin openssl@3 so brew bundle doesn't try to upgrade it to a version with
-  # no x86_64 macOS bottle. Idempotent: `brew pin` is a no-op if already
-  # pinned. Runs as root via sudo -u, matching the user that owns the
+  # Pin openssl@3 and rsync so brew bundle doesn't try to upgrade them to a
+  # version with no x86_64 macOS bottle. Idempotent: `brew pin` is a no-op if
+  # already pinned. Runs as root via sudo -u, matching the user that owns the
   # Homebrew install (brew pin writes to /usr/local/var/homebrew/pinned).
   #
   # ponytail: this only *keeps* an existing pin in place. postActivation runs
-  # AFTER the homebrew bundle slot, so if openssl@3 is ever unpinned (fresh
+  # AFTER the homebrew bundle slot, so if either is ever unpinned (fresh
   # install, manual `brew unpin`), the first rebuild that sees a bottle-less
   # upgrade fails in brew bundle before this runs. Recover with a one-time
-  # manual `brew pin openssl@3`.
+  # manual `brew pin openssl@3` / `brew pin rsync`.
   system.activationScripts.postActivation = {
     text = ''
-      /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
-        ${config.homebrew.prefix}/bin/brew pin openssl@3 \
-          || echo "brew pin openssl@3 failed (non-fatal), continuing"
+      for formula in openssl@3 rsync; do
+        /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
+          ${config.homebrew.prefix}/bin/brew pin "$formula" \
+            || echo "brew pin $formula failed (non-fatal), continuing"
+      done
     '';
   };
 

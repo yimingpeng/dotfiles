@@ -194,6 +194,13 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 25/09/2026, pinned `rsync` alongside `openssl@3` in the
+  `postActivation` Homebrew pin loop in `nix/configuration.nix`. The
+  system `rsync` on this Intel Mac is too old for some tools that need a
+  newer one, and (like `openssl@3`) newer Homebrew bottles for `rsync`
+  aren't available for x86_64-darwin, so `brew bundle` would otherwise try
+  to upgrade it to a bottle-less version. Same idempotent
+  `brew pin`-on-activation approach as the existing `openssl@3` pin.
 - By 09/09/2026, moved `herdr` off Homebrew. The 0.9.0 release dropped the
   x86_64-darwin bottle (Homebrew Tier 3 warning during `brew bundle`:
   "herdr: no bottle available!"), matching the same situation already
