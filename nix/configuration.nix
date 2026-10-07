@@ -78,9 +78,21 @@ with lib;
     #     has Cachix-cached builds for x86_64-darwin, so no Rust/Zig
     #     toolchain gets pulled into the closure. `cleanup = "zap"` removes
     #     the old Homebrew copy on the next rebuild.
-    #   - pi-coding-agent: downloaded from GitHub releases into ~/.local/
-    #     by a home.activation hook in nix/home.nix
-    #   - rtk: same — GitHub release binary into ~/.local/bin/
+    #   - pi-coding-agent: tried moving this to Homebrew (its `install` step
+    #     is just `npm install`, only depends on `node` - no Rust/LLVM
+    #     toolchain, so a from-source build is cheap on its own). But
+    #     Homebrew's Tier 3 policy refuses a bottle-less build unless told to
+    #     (`args = [ "build-from-source" ]`), and even with that flag the
+    #     build then demanded `brew unpin openssl@3` because it needs a
+    #     newer openssl@3 than the pinned one. Unpinning defeats the entire
+    #     point of the pin below (staying on the last x86_64-darwin-bottled
+    #     openssl@3 so pre-commit/rsync/pi-coding-agent keep linking against
+    #     a bottled copy) - so this stays off Homebrew after all, back to a
+    #     GitHub-release binary via the `installPiCodingAgent` activation
+    #     hook in nix/home.nix, same as rtk below.
+    #   - rtk: GitHub release binary into ~/.local/bin/ (home.nix activation
+    #     hook) - its source build pulls llvm@22 + rust and is genuinely
+    #     multi-hour on this Intel Mac, so it can't move here either.
     #   - openssl@3: stays here because pre-commit/rsync/pi-coding-agent
     #     etc. link against the Homebrew copy. Pinned below so brew bundle
     #     doesn't try to upgrade it to a version with no x86_64 bottle.
@@ -112,9 +124,11 @@ with lib;
   };
 
   # Pin openssl@3 and rsync so brew bundle doesn't try to upgrade them to a
-  # version with no x86_64 macOS bottle. Idempotent: `brew pin` is a no-op if
-  # already pinned. Runs as root via sudo -u, matching the user that owns the
-  # Homebrew install (brew pin writes to /usr/local/var/homebrew/pinned).
+  # version with no x86_64 macOS bottle. Runs as root via sudo -u, matching
+  # the user that owns the Homebrew install (brew pin writes to
+  # /usr/local/var/homebrew/pinned). Skips formulas already pinned: `brew
+  # pin` itself is a no-op then, but it still prints "Warning: X already
+  # pinned" on every rebuild, so we check first to keep activation quiet.
   #
   # ponytail: this only *keeps* an existing pin in place. postActivation runs
   # AFTER the homebrew bundle slot, so if either is ever unpinned (fresh
@@ -124,9 +138,12 @@ with lib;
   system.activationScripts.postActivation = {
     text = ''
       for formula in openssl@3 rsync; do
-        /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
-          ${config.homebrew.prefix}/bin/brew pin "$formula" \
-            || echo "brew pin $formula failed (non-fatal), continuing"
+        if ! /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
+          ${config.homebrew.prefix}/bin/brew list --pinned | grep -qx "$formula"; then
+          /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
+            ${config.homebrew.prefix}/bin/brew pin "$formula" \
+              || echo "brew pin $formula failed (non-fatal), continuing"
+        fi
       done
     '';
   };
@@ -136,4 +153,20 @@ with lib;
   # This installs the CLI and manages the `com.tailscale.tailscaled` launchd
   # daemon itself, replacing brew's `tailscale` service of the same name.
   services.tailscale.enable = true;
+
+  # Remote Login (Apple's sshd), reachable only from the home LAN and the
+  # tailnet. sshd listens on every interface and en0 has global IPv6
+  # addresses, so AllowUsers is what keeps the open internet out. Keys work
+  # from both; passwords only from the LAN. The `Match` ends at the end of this
+  # included file, so it can't swallow later sshd_config.d drop-ins.
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      AllowUsers ${config.system.primaryUser}@192.168.31.0/24 ${config.system.primaryUser}@fe80::/10 ${config.system.primaryUser}@100.64.0.0/10 ${config.system.primaryUser}@fd7a:115c:a1e0::/48
+      Match Address 192.168.31.0/24,fe80::/10
+        PasswordAuthentication yes
+    '';
+  };
 }

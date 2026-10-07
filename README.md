@@ -97,8 +97,8 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 
 - `nix/`: Declarative macOS system config — `flake.nix` (inputs: nixpkgs,
   nix-darwin, nix-homebrew, home-manager), `configuration.nix` (system defaults,
-  homebrew brews/casks), and `home.nix` (packages, zsh/starship/git/zoxide
-  setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
+  homebrew brews/casks, Tailscale, LAN/tailnet-only SSH), and `home.nix`
+  (packages, zsh/starship/git/zoxide setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
   `.claude/settings.json` into place)
 - `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles` and runs
   `darwin-rebuild switch` to apply the config
@@ -194,6 +194,79 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 06/10/2026, restricted Remote Login (Apple's sshd) to the home LAN and
+  the tailnet via `services.openssh` in `nix/configuration.nix`. sshd was
+  listening on every interface with password login on, and en0 has global
+  IPv6 addresses, so it was only as private as the router's IPv6 firewall.
+  Now `AllowUsers` only admits `192.168.31.0/24`, `fe80::/10`, Tailscale's
+  `100.64.0.0/10` and `fd7a:115c:a1e0::/48`; keys work from all of them,
+  passwords only from the LAN (`Match Address`). Checked per source address
+  with `sshd -T -C`. Side effect: `ssh <host>.local` may resolve to a global
+  IPv6 address and get refused - use the IPv4 address or the Tailscale name.
+- By 05/10/2026, bumped `pi-coding-agent` from `0.87.1` to `1.0.0` (latest
+  stable) in `installPiCodingAgent` in `nix/home.nix`. Same
+  manual-edit-then-rebuild flow as prior bumps (per the 26/09/2026 entry,
+  `brew update && brew upgrade` can't reach this package; only the
+  hardcoded version string in `nix/home.nix` does). Installed manually via
+  `curl ... | tar -xz -C $HOME/.local/share/pi-coding-agent/1.0.0` and
+  `ln -sfn` because `./rebuild_nix.sh` needs sudo and the activation hook
+  itself only runs as the user. Once the user runs `./rebuild_nix.sh` to
+  confirm, the activation hook will re-run the same download/extract and
+  rewrite the symlink to the same target - effectively a no-op for pi
+  itself but it does re-write the hook registration in the home-manager
+  activation graph so future rebuilds know the new version. Notable
+  upstream changes in 1.0.0 worth flagging: TUI now defaults to fullscreen
+  (was inline scrollback); restore old behavior by adding
+  `"tuiMode": "regular"` to `agents/.pi/agent/settings.json`. Also: ~40%
+  fewer codemode prompt tokens, ~5x lower transcript memory, MCP OAuth
+  hardening (RFC 9207 `iss` checks, per-server credentials, step-up
+  sign-in keeping granted scopes), Radius sign-in in `/login`, and
+  `--provider` without `--model` now errors instead of silently using the
+  default. `lastChangelogVersion` in `agents/.pi/agent/settings.json`
+  left at `0.99.1` on purpose so pi shows the 1.0.0 changelog on next
+  startup - flip it to `1.0.0` (or just press through the prompt) once
+  it's been read.
+- By 02/10/2026, bumped `npm:pi-web-access` from `0.14.0` to `0.34.0` in
+  `agents/.pi/agent/settings.json` to clear pi's startup warning about
+  `typebox` being listed in `dependencies` instead of `peerDependencies`
+  with a `*` range. The 0.14.0 pin predated the upstream fix (PR #443
+  shipped in 0.32.0, issue #442) that moved `typebox` back to peer deps so
+  pi's bundled copy is used instead of a duplicate npm install under
+  `~/.pi/agent/npm/node_modules/`. 0.34.0 also keeps the package on
+  Pi 0.86.1+ peer deps, which the locally installed pi (0.99.1) already
+  satisfies. Ran `pi install npm:pi-web-access@0.34.0` to reconcile the
+  on-disk install (the standalone `pi update --extensions` /
+  `pi update --all` flow only refreshed the git package; the explicit
+  `pi install` was needed to rewrite the npm one in place). `pi --print
+  "say ok"` now boots with no extension warnings, and the duplicate
+  `typebox/` copy under `~/.pi/agent/npm/node_modules/` was removed as a
+  side effect of the npm install (`removed 1 package`).
+- By 26/09/2026, investigated why `pi` (`pi-coding-agent`) wasn't picking up
+  new releases from a plain `brew update && brew upgrade`. Root cause: it
+  was never a Homebrew package on this machine at all - it's a
+  `home.activation` hook (`installPiCodingAgent` in `nix/home.nix`)
+  downloading a hardcoded version from GitHub Releases, so `brew upgrade`
+  had nothing to act on, and even `./rebuild_nix.sh` would only ever
+  reinstall whatever version was hardcoded, never "latest". Tried moving it
+  onto Homebrew instead (its formula's `install` step is just `npm install`,
+  only `depends_on "node"` - no Rust/LLVM toolchain like `rtk` needs, so a
+  from-source build looked cheap): first attempt failed because Homebrew's
+  Tier 3 policy refuses a bottle-less build outright ("no bottle
+  available!") unless told `args = [ "build-from-source" ]`; second attempt
+  with that flag failed too, this time demanding `brew unpin openssl@3`,
+  because building it needs a newer openssl@3 than the one pinned in
+  `nix/configuration.nix`. That pin exists specifically to keep openssl@3 on
+  the last x86_64-darwin-bottled version so pre-commit/rsync/pi-coding-agent
+  keep linking against a bottled copy instead of forcing openssl@3 itself
+  into a source build - unpinning it to satisfy pi-coding-agent would
+  defeat the pin's whole purpose. Reverted the Homebrew attempt and instead
+  kept `pi-coding-agent` on the GitHub-release-binary pattern (same as
+  `rtk`), just bumped the pinned version from 0.84.4 (see 05/09/2026 entry)
+  to 0.87.1 (current stable) in `installPiCodingAgent` in `nix/home.nix` -
+  the actual fix for the original report. Going forward, `pi-coding-agent`
+  version bumps are manual edits to that hardcoded version string followed
+  by `./rebuild_nix.sh`, not something `brew update && brew upgrade` (or any
+  fully automatic mechanism) can reach - same manual-pin tradeoff as `rtk`.
 - By 25/09/2026, pinned `rsync` alongside `openssl@3` in the
   `postActivation` Homebrew pin loop in `nix/configuration.nix`. The
   system `rsync` on this Intel Mac is too old for some tools that need a

@@ -12,6 +12,43 @@
           "contextWindow": 272000
         }
       }
+    },
+    "minimax-cn": {
+      "models": [
+        {
+          "id": "MiniMax-M3.1-Flash-Preview",
+          "name": "MiniMax-M3.1-Flash-Preview",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "cost": {
+            "input": 0.3,
+            "output": 1.2,
+            "cacheRead": 0.06,
+            "cacheWrite": 0
+          },
+          "contextWindow": 1000000,
+          "maxTokens": 512000,
+          "inputLimits": {
+            "images": {
+              "resize": {
+                "maxWidth": 2000,
+                "maxHeight": 2000,
+                "maxBytes": 4718592,
+                "jpegQuality": 80
+              }
+            }
+          },
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": null,
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh",
+            "max": "max"
+          }
+        }
+      ]
     }
   }
 }

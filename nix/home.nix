@@ -69,11 +69,15 @@ in
   '';
 
   # rtk (Rust Token Killer) and pi-coding-agent have no Homebrew x86_64
-  # bottles for new versions, and source builds aren't viable on this Intel
-  # Mac (rtk pulls llvm@22 + rust, multi-hour). Both publish pre-built
-  # x86_64 darwin binaries on GitHub Releases, so download those directly
-  # into ~/.local/. Versions below are bumped when the user wants to
-  # upgrade - matching the release tag on GitHub.
+  # bottles for new versions. rtk's source build pulls llvm@22 + rust and is
+  # genuinely multi-hour on this Intel Mac. pi-coding-agent's own build is
+  # cheap (`npm install`, only depends on `node`), but building it via
+  # Homebrew demands `brew unpin openssl@3` first (see the `brews` comment
+  # in nix/configuration.nix) - unpinning defeats the reason that pin
+  # exists, so it stays off Homebrew too. Both publish pre-built x86_64
+  # darwin binaries on GitHub Releases, so download those directly into
+  # ~/.local/. Versions below are bumped when the user wants to upgrade -
+  # matching the release tag on GitHub.
   #
   # The hooks are non-fatal on failure so a network blip or GitHub rate
   # limit doesn't break the rest of the system activation.
@@ -94,16 +98,16 @@ in
   '';
 
   home.activation.installPiCodingAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    PI_DIR="$HOME/.local/share/pi-coding-agent/0.85.1"
+    PI_DIR="$HOME/.local/share/pi-coding-agent/1.0.0"
     $DRY_RUN_CMD mkdir -p "$PI_DIR" \
       && ${pkgs.curl}/bin/curl -fsSL \
-        "https://github.com/earendil-works/pi/releases/download/v0.85.1/pi-darwin-x64.tar.gz" \
+        "https://github.com/earendil-works/pi/releases/download/v1.0.0/pi-darwin-x64.tar.gz" \
         | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.gzip}/bin/gzip -x -C "$PI_DIR" \
       && ${pkgs.coreutils}/bin/ln -sfn "$PI_DIR/pi/pi" "$HOME/.local/bin/pi" \
       && ${pkgs.coreutils}/bin/chmod +x "$PI_DIR/pi/pi" \
       || echo "pi-coding-agent install failed, continuing"
   '';
-  
+
   # config the zsh
   programs.zsh = {
     enable = true;
