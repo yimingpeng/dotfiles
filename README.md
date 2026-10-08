@@ -352,3 +352,11 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   was working as intended, just against a slower-moving version. The two
   casks `conflicts_with` each other, so the old cask needs a manual
   `brew uninstall --cask claude-code` before the next rebuild.
+- By 01/10/2026, bumped `pi-web-access` from `^0.14.0` to `^0.35.0` in
+  `agents/.pi/agent/settings.json` and `~/.pi/agent/npm/package.json`.
+  pi-coding-agent 0.99.x started warning when an extension lists a
+  host-provided package (`typebox`) in `dependencies` instead of
+  `peerDependencies: "*"` - the local copy can shadow the host's and create
+  duplicate runtime modules. v0.35.0 of `pi-web-access` fixed this
+  upstream; 0.14.0 still had it as a regular dep (intentional at the time,
+  see its `CHANGELOG.md`). Reinstalled to pull the new version.
