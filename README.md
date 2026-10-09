@@ -173,8 +173,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 | Tool | Purpose |
 | --- | --- |
-| `freebuff` | AI coding agent CLI; no nixpkgs/Homebrew package exists, so a `home.activation` hook runs `npm install -g` on every rebuild instead |
-| `@suibiji/dida-cli` | DIDA CLI (TickTick/Dida365's own documented task-management CLI, binary `dida`); same no-nixpkgs-package, activation-hook rationale as `freebuff` |
+| `@suibiji/dida-cli` | DIDA CLI (TickTick/Dida365's own documented task-management CLI, binary `dida`); no nixpkgs/Homebrew package exists, so a `home.activation` hook runs `npm install -g` on every rebuild instead |
 
 ### Enabled via home-manager `programs.*` modules
 
@@ -360,3 +359,11 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   duplicate runtime modules. v0.35.0 of `pi-web-access` fixed this
   upstream; 0.14.0 still had it as a regular dep (intentional at the time,
   see its `CHANGELOG.md`). Reinstalled to pull the new version.
+- By 27/09/2026, removed `freebuff` (the AI coding agent CLI) and its
+  `home.activation.installFreebuff` hook from `nix/home.nix`. Stopped using
+  it. Also silenced the npm install noise that the remaining
+  `installDidaCli` hook was printing on every rebuild: `--no-fund` drops
+  the "13 packages are looking for funding" notice, and
+  `--no-update-notifier` drops the "New major version of npm available"
+  notice. The "Activating installFreebuff" line in `home-manager`'s output
+  went away with the hook itself.

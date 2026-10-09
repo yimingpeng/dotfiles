@@ -37,21 +37,14 @@ in
     "${config.home.homeDirectory}/.orbstack/bin"
   ];
 
-  # freebuff has no nixpkgs/Homebrew package, only `npm install -g freebuff`.
-  # Installed via activation hook (not a pinned buildNpmPackage derivation)
-  # since it ships new releases frequently; this keeps it auto-updated on
-  # every darwin-rebuild switch instead of hand-maintaining an npmDepsHash.
-  home.activation.installFreebuff = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" freebuff \
-      || echo "freebuff install failed, continuing"
-  '';
-
   # DIDA CLI (TickTick/Dida365's own documented CLI, binary `dida`) has no
-  # nixpkgs/Homebrew package, only `npm install -g @suibiji/dida-cli`. Same
-  # rationale as freebuff: ships frequent point releases, so an activation
-  # hook keeps it current instead of hand-pinning an npmDepsHash.
+  # nixpkgs/Homebrew package, only `npm install -g @suibiji/dida-cli`. Ships
+  # frequent point releases, so an activation hook keeps it current instead
+  # of hand-pinning an npmDepsHash. `--no-fund` and `--no-update-notifier`
+  # silence the "N packages are looking for funding" and "new npm major
+  # available" notices that npm otherwise prints on every rebuild.
   home.activation.installDidaCli = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --prefix "$HOME/.npm-global" @suibiji/dida-cli \
+    $DRY_RUN_CMD ${pkgs.nodejs_22}/bin/npm install -g --no-fund --no-update-notifier --prefix "$HOME/.npm-global" @suibiji/dida-cli \
       || echo "dida-cli install failed, continuing"
   '';
 
