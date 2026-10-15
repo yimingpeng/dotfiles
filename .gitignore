@@ -89,5 +89,9 @@ nvim/lazy-lock.json
 .omc/
 herdr/.plugins.lock
 herdr/session.json
+herdr/session-snapshots/
+herdr/release-notes.json
+herdr/__writetest
 .claude/
 agents/skills/synced/
+agents/skills/.trash/

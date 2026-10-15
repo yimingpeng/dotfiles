@@ -16,7 +16,9 @@ The repo contains all my dotfiles
 - `starship.toml`: This is for configuring the look-and-feel for the prompt
 - `vscode`: This folder includes all the configs for my `vscode`
 - `herdr`: Config for `herdr`, a terminal session manager with tmux-style pane
-  keybindings and an agents panel for managing multiple AI coding agent sessions
+  keybindings and an agents panel for managing multiple AI coding agent sessions.
+  Only `config.toml` is tracked; runtime state herdr writes here (sessions,
+  snapshots, logs, release notes) is gitignored
 - `AGENTS.md`: Project-level agent rules for this repo (e.g. always update
   the README at the end of any change); global rules live in
   `agents/AGENTS.md`
@@ -194,6 +196,11 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 15/10/2026, tidied git noise from tools that write into the repo:
+  gitignored `herdr/session-snapshots/`, `herdr/release-notes.json`,
+  `herdr/__writetest` (herdr runtime state; the last two were tracked and
+  are now untracked, files kept locally) and `agents/skills/.trash/` (the
+  skills tool's deleted-skill trash).
 - By 15/10/2026, `nvim` copies to the local clipboard over SSH via OSC 52
   (`nvim/lua/config/options.lua`, only when `SSH_TTY` is set). Paste reads
   the unnamed register because OSC 52 paste queries hang in most terminals;
