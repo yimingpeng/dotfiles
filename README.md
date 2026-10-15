@@ -10,7 +10,7 @@ The repo contains all my dotfiles
   wired to my personal notes vault, telescope tweaks (horizontal layout,
   `<leader>fp` for plugin files), `cmp-emoji` completion, and LSPs for
   nix/python/typescript/markdown (`nil_ls` comes from home-manager, not
-  Mason)
+  Mason); over SSH, yanks go to the local clipboard via OSC 52
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is
   suitable for my filco 68 keyboard
 - `starship.toml`: This is for configuring the look-and-feel for the prompt
@@ -194,6 +194,10 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 15/10/2026, `nvim` copies to the local clipboard over SSH via OSC 52
+  (`nvim/lua/config/options.lua`, only when `SSH_TTY` is set). Paste reads
+  the unnamed register because OSC 52 paste queries hang in most terminals;
+  inside tmux it needs `set -g set-clipboard on`.
 - By 13/10/2026, updated `herdr` from 0.9.0 to 0.9.3 (latest stable).
   Homebrew's `herdr` 0.9.3 still has no x86_64-darwin bottle (it would build
   from source with `rust` + `zig@0.16`), so it stays on the `herdr-nix` flake.
