@@ -4,12 +4,14 @@ let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
 
   # herdr has no x86_64-darwin Homebrew bottle (Tier 3 dropped it in 0.9.0;
-  # a source build needs rust + zig). The official `herdrdev/herdr-nix` flake
-  # wraps herdr's prebuilt GitHub release binary in a derivation -
-  # hash-verified, Cachix-cached, no toolchain in the closure. Its
-  # `update-herdr` bot tracks stable releases, so bump with
-  # `nix flake update herdr-nix` (in nix/) then `darwin-rebuild switch`.
-  herdr = inputs.herdr-nix.packages.x86_64-darwin.herdr;
+  # a source build needs rust + zig). The official `herdrdev/herdr-nix` repo's
+  # package.nix wraps herdr's prebuilt GitHub release binary in a
+  # hash-verified derivation, no toolchain in the closure. It's called with
+  # our own pkgs rather than taken from the flake's outputs, which build it
+  # against a second (nixos-unstable) nixpkgs. Its `update-herdr` bot tracks
+  # stable releases, so bump with `nix flake update herdr-nix` (in nix/)
+  # then `darwin-rebuild switch`.
+  herdr = pkgs.callPackage "${inputs.herdr-nix}/package.nix" { };
 in
 
 {
@@ -123,7 +125,11 @@ in
       # regardless of declaration order below. It must run after starship
       # (or anything else hooking precmd/chpwd) or it warns on every `cd`,
       # so the eval is placed here under mkAfter instead.
+      # _ZO_DOCTOR=0: agent shells (Claude Code etc.) replay a snapshot of
+      # the `cd` function without zoxide's chpwd hook, so zoxide's doctor
+      # warned on every `cd` there. This init is correct; inherited by them.
       (lib.mkAfter ''
+        export _ZO_DOCTOR=0
         eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
       '')
     ];

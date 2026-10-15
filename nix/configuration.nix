@@ -8,6 +8,14 @@ with lib;
 
   nixpkgs.config.allowUnfree = true; # allow us to install apps that are not completely free
   nixpkgs.hostPlatform = "x86_64-darwin"; # use x86_64-darwin for Intel CPU
+  # Silence "Nixpkgs 26.05 will be the last release to support x86_64-darwin"
+  # on every eval. Acknowledged: 26.05 gets binaries until end of 2026; 26.11
+  # drops x86_64-darwin entirely, so stay on 26.05 (see README change log).
+  nixpkgs.config.allowDeprecatedx86_64Darwin = true;
+  # The bundled `darwin-uninstaller` evaluates a second, stock nix-darwin
+  # system whose nixpkgs config can't see the flag above, so it would still
+  # warn. If ever needed: `nix run nix-darwin#darwin-uninstaller`.
+  system.tools.darwin-uninstaller.enable = false;
 
   # Define the main user, get from `id` command
   system.primaryUser = "yimingpeng";
@@ -60,7 +68,7 @@ with lib;
     # openssl@4, and cmake for rsync's lz4/xxhash/zstd). Casks are
     # prebuilt app bundles and unaffected. CLI tools come from nixpkgs
     # instead (home.packages in nix/home.nix, services.tailscale below),
-    # herdr from the herdr-nix flake, and rtk/pi-coding-agent from GitHub
+    # herdr from herdr-nix's package.nix, and rtk/pi-coding-agent from GitHub
     # release binaries (activation hooks in nix/home.nix).
     # `cleanup = "zap"` uninstalls the old Homebrew formulae.
     casks = [

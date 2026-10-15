@@ -191,6 +191,22 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 15/10/2026, silenced the rebuild warnings. The "Nixpkgs 26.05 will be
+  the last release to support x86_64-darwin" warning is acknowledged via
+  `nixpkgs.config.allowDeprecatedx86_64Darwin = true`, plus
+  `system.tools.darwin-uninstaller.enable = false` because that bundled
+  tool evaluates a second, stock nix-darwin system that can't see the flag
+  (run it on demand with `nix run nix-darwin#darwin-uninstaller`). The
+  "ignoring untrusted flake configuration setting 'extra-substituters'"
+  warning came from the herdr Cachix `nixConfig` in `nix/flake.nix`: the
+  `herdr-nix` input is now `flake = false` and `nix/home.nix` calls its
+  `package.nix` with our own pkgs, so the Cachix cache, its nixos-unstable
+  nixpkgs and flake-utils are all gone from the closure and lock (herdr
+  stays 0.9.3, same rev; it's just a release-binary download). zoxide's
+  "detected a possible configuration issue" doctor message in agent shells
+  (which replay `cd` without zoxide's hook) is off via `_ZO_DOCTOR=0` in
+  `.zshrc`. Also untracked the accidentally committed `result` and
+  `nix/result` nix build symlinks and gitignored `result`.
 - By 15/10/2026, Homebrew now holds casks only. This Intel Mac is Homebrew
   Tier 3 (no x86_64 bottles for new formula versions), so
   `brew update && brew upgrade` kept failing on source builds: `pre-commit`

@@ -95,3 +95,6 @@ herdr/__writetest
 .claude/
 agents/skills/synced/
 agents/skills/.trash/
+
+# nix build output symlinks (GC roots into /nix/store)
+result

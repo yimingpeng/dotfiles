@@ -17,22 +17,16 @@
 
     # herdr has no nixpkgs/x86_64-darwin Homebrew bottle (Tier 3 dropped
     # it in 0.9.0). herdr-nix is the official packaging of herdr's
-    # prebuilt release binary as a Nix derivation, with a Cachix cache
-    # behind it. Used by `home.nix` (see the `herdr` let-binding there).
-    # Upstream's `update-herdr` bot bumps stable releases; pick them up
-    # with `nix flake update herdr-nix`.
-    herdr-nix.url = "github:herdrdev/herdr-nix";
-  };
-
-  # herdr-nix ships Cachix-cached builds. The substituter and public key
-  # are declared here so `darwin-rebuild switch` (which runs from inside
-  # this flake) picks them up automatically - herdr's binary then comes
-  # from the cache instead of being re-fetched and re-hashed locally.
-  nixConfig = {
-    extra-substituters = [ "https://herdr.cachix.org" ];
-    extra-trusted-public-keys = [
-      "herdr.cachix.org-1:3nH7IStRsS0ASfdonA0DCRR2ZrSCeWitZ7Kwew0cR4I="
-    ];
+    # prebuilt release binary as a Nix derivation. Only its source is used
+    # (`flake = false`): `home.nix` calls its package.nix with our own pkgs
+    # (see the `herdr` let-binding there), so its nixos-unstable nixpkgs,
+    # flake-utils and Cachix substituter aren't needed. Upstream's
+    # `update-herdr` bot bumps stable releases; pick them up with
+    # `nix flake update herdr-nix`.
+    herdr-nix = {
+      url = "github:herdrdev/herdr-nix";
+      flake = false;
+    };
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, home-manager, herdr-nix }: {
