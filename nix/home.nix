@@ -35,6 +35,11 @@ in
     rclone      # CLI sync/upload to cloud storage (used for pCloud instead of the memory-hungry pCloud app)
     timg        # terminal image/video viewer
     herdr       # terminal session manager with agents panel - via herdr-nix flake (see let-binding above)
+    # Formerly Homebrew brews; this Intel Mac gets no Homebrew bottles (Tier 3),
+    # see the `homebrew` comment in nix/configuration.nix
+    pre-commit  # git pre-commit hook framework
+    rsync       # macOS's /usr/bin/rsync is too old for some tools
+    kubeconform # Kubernetes manifest validator
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
@@ -57,14 +62,10 @@ in
   '';
 
   # rtk (Rust Token Killer) and pi-coding-agent have no Homebrew x86_64
-  # bottles for new versions. rtk's source build pulls llvm@22 + rust and is
-  # genuinely multi-hour on this Intel Mac. pi-coding-agent's own build is
-  # cheap (`npm install`, only depends on `node`), but building it via
-  # Homebrew demands `brew unpin openssl@3` first (see the `brews` comment
-  # in nix/configuration.nix) - unpinning defeats the reason that pin
-  # exists, so it stays off Homebrew too. Both publish pre-built x86_64
-  # darwin binaries on GitHub Releases, so download those directly into
-  # ~/.local/. Versions below are bumped when the user wants to upgrade -
+  # bottles for new versions, and this machine keeps no Homebrew formulae
+  # (see the `homebrew` comment in nix/configuration.nix). Both publish
+  # pre-built x86_64 darwin binaries on GitHub Releases, so download those
+  # directly into ~/.local/. Versions below are bumped when the user wants to upgrade -
   # matching the release tag on GitHub.
   #
   # The hooks are non-fatal on failure so a network blip or GitHub rate

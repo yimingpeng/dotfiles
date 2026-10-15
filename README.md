@@ -99,11 +99,12 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 
 - `nix/`: Declarative macOS system config — `flake.nix` (inputs: nixpkgs,
   nix-darwin, nix-homebrew, home-manager), `configuration.nix` (system defaults,
-  homebrew brews/casks, Tailscale, LAN/tailnet-only SSH), and `home.nix`
+  Homebrew casks, Tailscale, LAN/tailnet-only SSH), and `home.nix`
   (packages, zsh/starship/git/zoxide setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
   `.claude/settings.json` into place)
-- `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles` and runs
-  `darwin-rebuild switch` to apply the config
+- `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles`, runs
+  `darwin-rebuild switch` to apply the config, then `brew upgrade` to
+  upgrade the Homebrew casks
 - Homebrew itself is now managed through nix-darwin (see
   `nix/configuration.nix`). See [Installed applications](#installed-applications)
   for the full list of what gets installed
@@ -111,7 +112,7 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 ## Installed applications
 
 Everything below is installed declaratively - nixpkgs packages come from
-`nix/home.nix`, homebrew packages from `nix/configuration.nix`, and enabled
+`nix/home.nix`, Homebrew casks from `nix/configuration.nix`, and enabled
 programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 ### Homebrew casks (GUI apps)
@@ -127,20 +128,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `betterdisplay` | Display/resolution management | |
 | `rectangle` | Window tiling/management | |
 | `sublime-text` | Text editor | |
-| `spokenly` | Speech-to-text dictation | |
+| `superwhisper` | Speech-to-text dictation | |
 | `visual-studio-code` | Code editor | `vscode/` |
-
-### Homebrew brews (CLI)
-
-| Tool | Purpose |
-| --- | --- |
-| `zoxide` | Smarter `cd` |
-| `openssl@3` | TLS/SSL library |
-| `ca-certificates` | Root CA certificates |
-| `tailscale` | VPN mesh networking |
-| `pre-commit` | Git pre-commit hook framework |
-| `kubeconform` | Kubernetes manifest validator |
-| `rsync` | File sync/copy tool |
+| `android-studio` | Android IDE | |
+| `copilot-cli` | GitHub Copilot CLI | |
 
 ### home-manager packages (nixpkgs)
 
@@ -163,6 +154,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `nixfmt` | Nix formatter (invoked by `nil_ls`) |
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
 | `nerd-fonts.hack` | Hack Nerd Font, the font everything renders in |
+| `pre-commit` | Git pre-commit hook framework |
+| `rsync` | File sync/copy tool (macOS's `/usr/bin/rsync` is too old for some tools) |
+| `kubeconform` | Kubernetes manifest validator |
+| `tailscale` | VPN mesh networking (nix-darwin's `services.tailscale` in `configuration.nix`, not `home.nix`) |
 
 ### GitHub release binaries (via activation hooks)
 
@@ -196,6 +191,28 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 15/10/2026, Homebrew now holds casks only. This Intel Mac is Homebrew
+  Tier 3 (no x86_64 bottles for new formula versions), so
+  `brew update && brew upgrade` kept failing on source builds: `pre-commit`
+  (no bottle), `python@3.14` (only there for pre-commit; its new version
+  needs `openssl@4`, also bottle-less) and `cmake` (a leftover build
+  dependency of rsync's `lz4`/`xxhash`/`zstd` that couldn't bootstrap).
+  Moved `pre-commit`, `rsync` and `kubeconform` to nixpkgs
+  (`home.packages` in `nix/home.nix`, all cache-backed for x86_64-darwin),
+  dropped the redundant `zoxide` brew (already installed by
+  `programs.zoxide`), dropped `openssl@3`/`ca-certificates` (only needed by
+  those formulae) and deleted the `postActivation` `brew pin` loop for
+  `openssl@3`/`rsync` - nothing left to pin. `cleanup = "zap"` uninstalls
+  the old formulae on the next rebuild. Versions shift slightly to what
+  nixpkgs 26.05 ships: rsync 3.5.0 -> 3.4.4, kubeconform 0.8.0 -> 0.7.0,
+  pre-commit 4.6.2 -> 4.5.1. `rebuild_nix.sh` now ends with `brew upgrade`
+  (after the switch, so a failed upgrade can't abort it; the switch already
+  runs `brew update` via `onActivation.autoUpdate`). Note: nixpkgs 26.05 is
+  the last release supporting x86_64-darwin.
+- By 15/10/2026, synced the README's Homebrew casks table with
+  `nix/configuration.nix`: dropped `spokenly` (no longer used, replaced by
+  `superwhisper`) and added the missing `superwhisper`, `android-studio` and
+  `copilot-cli` rows.
 - By 15/10/2026, tidied git noise from tools that write into the repo:
   gitignored `herdr/session-snapshots/`, `herdr/release-notes.json`,
   `herdr/__writetest` (herdr runtime state; the last two were tracked and

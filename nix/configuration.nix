@@ -49,63 +49,20 @@ with lib;
     enable = true;
     onActivation.cleanup = "zap"; # remove anything not listed here
     onActivation.autoUpdate = true; # refresh brew's package index (does not upgrade installed packages)
-    # onActivation.upgrade is left at its default (false): darwin-rebuild only
-    # ensures listed brews/casks are installed, it never force-upgrades them.
-    # Upgrading is a manual, explicit `brew upgrade` — decoupled from Nix
-    # rebuilds so a single Tier-3 bottle-less release (see below) can't abort
-    # the whole `darwin-rebuild switch`. This used to be
-    # `onActivation.upgrade = true` + `extraFlags = [ "--force" ]`, which is
-    # exactly what turned the gh/herdr/rtk/pi-coding-agent/tailscale bottle
-    # failures below into hard failures of the entire system rebuild instead
-    # of just a failed `brew upgrade`.
+    # onActivation.upgrade is left at its default (false): upgrading is the
+    # `brew upgrade` at the end of rebuild_nix.sh, after the switch, so a
+    # failed upgrade can never abort `darwin-rebuild switch`.
     #
-    # Intel Mac (x86_64-darwin) — Homebrew dropped x86_64 macOS bottles for
-    # newer versions of gh, herdr, openssl@3, pi-coding-agent, rsync, rtk, and
-    # tailscale. Source builds aren't viable here either (rtk pulls in
-    # llvm@22 + rust, multi-hour). So:
-    #   - gh: moved to nixpkgs (home.packages in nix/home.nix) — cache-backed
-    #     for x86_64-darwin, no Tier 3 exposure. `cleanup = "zap"` removes the
-    #     old Homebrew copy on the next rebuild.
-    #   - tailscale: moved to nix-darwin's `services.tailscale` module below
-    #     (pkgs.tailscale from nixpkgs, cache-backed for x86_64-darwin, same
-    #     reasoning as gh) instead of pinning the Homebrew formula forever —
-    #     a permanent pin means never getting security fixes as Tailscale's
-    #     control plane moves on. `cleanup = "zap"` removes the old Homebrew
-    #     copy/service on the next rebuild.
-    #   - herdr: installed via the `herdrdev/herdr-nix` flake input (see
-    #     flake.nix and the `herdr` let-binding in nix/home.nix). That flake
-    #     wraps herdr's prebuilt GitHub release binary as a derivation and
-    #     has Cachix-cached builds for x86_64-darwin, so no Rust/Zig
-    #     toolchain gets pulled into the closure. `cleanup = "zap"` removes
-    #     the old Homebrew copy on the next rebuild.
-    #   - pi-coding-agent: tried moving this to Homebrew (its `install` step
-    #     is just `npm install`, only depends on `node` - no Rust/LLVM
-    #     toolchain, so a from-source build is cheap on its own). But
-    #     Homebrew's Tier 3 policy refuses a bottle-less build unless told to
-    #     (`args = [ "build-from-source" ]`), and even with that flag the
-    #     build then demanded `brew unpin openssl@3` because it needs a
-    #     newer openssl@3 than the pinned one. Unpinning defeats the entire
-    #     point of the pin below (staying on the last x86_64-darwin-bottled
-    #     openssl@3 so pre-commit/rsync/pi-coding-agent keep linking against
-    #     a bottled copy) - so this stays off Homebrew after all, back to a
-    #     GitHub-release binary via the `installPiCodingAgent` activation
-    #     hook in nix/home.nix, same as rtk below.
-    #   - rtk: GitHub release binary into ~/.local/bin/ (home.nix activation
-    #     hook) - its source build pulls llvm@22 + rust and is genuinely
-    #     multi-hour on this Intel Mac, so it can't move here either.
-    #   - openssl@3: stays here because pre-commit/rsync/pi-coding-agent
-    #     etc. link against the Homebrew copy. Pinned below so brew bundle
-    #     doesn't try to upgrade it to a version with no x86_64 bottle.
-    #   - rsync: stays here (system rsync is too old for some tools), pinned
-    #     below for the same reason as openssl@3.
-    brews = [
-      "zoxide"
-      "ca-certificates"
-      "openssl@3"
-      "pre-commit"
-      "kubeconform"
-      "rsync"
-    ];
+    # Casks only, no `brews`. This Intel Mac (x86_64-darwin) is Homebrew
+    # Tier 3: new formula versions ship no x86_64 bottle, so every formula
+    # upgrade turned into a source build that failed (gh, herdr, rtk,
+    # pi-coding-agent, tailscale, then pre-commit -> python@3.14 ->
+    # openssl@4, and cmake for rsync's lz4/xxhash/zstd). Casks are
+    # prebuilt app bundles and unaffected. CLI tools come from nixpkgs
+    # instead (home.packages in nix/home.nix, services.tailscale below),
+    # herdr from the herdr-nix flake, and rtk/pi-coding-agent from GitHub
+    # release binaries (activation hooks in nix/home.nix).
+    # `cleanup = "zap"` uninstalls the old Homebrew formulae.
     casks = [
       "wezterm"
       "claude-code@latest" # tracks Homebrew's "latest" release channel (vs "stable" for plain claude-code)
@@ -123,33 +80,8 @@ with lib;
     ];
   };
 
-  # Pin openssl@3 and rsync so brew bundle doesn't try to upgrade them to a
-  # version with no x86_64 macOS bottle. Runs as root via sudo -u, matching
-  # the user that owns the Homebrew install (brew pin writes to
-  # /usr/local/var/homebrew/pinned). Skips formulas already pinned: `brew
-  # pin` itself is a no-op then, but it still prints "Warning: X already
-  # pinned" on every rebuild, so we check first to keep activation quiet.
-  #
-  # ponytail: this only *keeps* an existing pin in place. postActivation runs
-  # AFTER the homebrew bundle slot, so if either is ever unpinned (fresh
-  # install, manual `brew unpin`), the first rebuild that sees a bottle-less
-  # upgrade fails in brew bundle before this runs. Recover with a one-time
-  # manual `brew pin openssl@3` / `brew pin rsync`.
-  system.activationScripts.postActivation = {
-    text = ''
-      for formula in openssl@3 rsync; do
-        if ! /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
-          ${config.homebrew.prefix}/bin/brew list --pinned | grep -qx "$formula"; then
-          /usr/bin/sudo --user=${escapeShellArg config.system.primaryUser} --set-home \
-            ${config.homebrew.prefix}/bin/brew pin "$formula" \
-              || echo "brew pin $formula failed (non-fatal), continuing"
-        fi
-      done
-    '';
-  };
-
   # Tailscale via nix-darwin's native module (pkgs.tailscale from nixpkgs)
-  # instead of the Homebrew formula — see the brews comment above for why.
+  # instead of the Homebrew formula - see the homebrew comment above for why.
   # This installs the CLI and manages the `com.tailscale.tailscaled` launchd
   # daemon itself, replacing brew's `tailscale` service of the same name.
   services.tailscale.enable = true;
