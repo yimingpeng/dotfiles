@@ -156,7 +156,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `uv` | Python package manager (`uv tool install` -> `~/.local/bin`) |
 | `rclone` | CLI sync/upload to cloud storage (used for pCloud) |
 | `timg` | Terminal image/video viewer |
-| `herdr` | Terminal session manager with agents panel — installed via the [`herdrdev/herdr-nix`](https://github.com/herdrdev/herdr-nix) flake input (no Homebrew x86_64-darwin bottle since 0.9.0; prebuilt-binary derivation, Cachix-cached) |
+| `herdr` | Terminal session manager with agents panel — installed via the [`herdrdev/herdr-nix`](https://github.com/herdrdev/herdr-nix) flake input (no Homebrew x86_64-darwin bottle since 0.9.0; prebuilt-binary derivation, Cachix-cached; bump with `nix flake update herdr-nix`) |
 | `nil` | Nix language server (used by nvim's `nil_ls`) |
 | `nixfmt` | Nix formatter (invoked by `nil_ls`) |
 | `statix` | Nix linter (invoked by `nil_ls` for diagnostics) |
@@ -194,6 +194,17 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 13/10/2026, updated `herdr` from 0.9.0 to 0.9.3 (latest stable).
+  Homebrew's `herdr` 0.9.3 still has no x86_64-darwin bottle (it would build
+  from source with `rust` + `zig@0.16`), so it stays on the `herdr-nix` flake.
+  Upstream's `update-herdr` bot has now caught up, so ran
+  `nix flake update herdr-nix` (lock moved to rev `2298bb9`, 0.9.3) and
+  dropped the local `overrideAttrs` version/hash pin from `nix/home.nix`;
+  `herdr` there is now just `inputs.herdr-nix.packages.x86_64-darwin.herdr`.
+  Also removed a stale 0.8.0 copy at `~/.local/bin/herdr` that sat ahead of
+  the Nix one on `PATH` (home.sessionPath prepends `~/.local/bin`) and was
+  why `herdr --version` kept reporting 0.8.0 despite the Nix package being
+  newer. Needs `darwin-rebuild switch` to take effect.
 - By 06/10/2026, restricted Remote Login (Apple's sshd) to the home LAN and
   the tailnet via `services.openssh` in `nix/configuration.nix`. sshd was
   listening on every interface with password login on, and en0 has global

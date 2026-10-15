@@ -18,9 +18,9 @@
     # herdr has no nixpkgs/x86_64-darwin Homebrew bottle (Tier 3 dropped
     # it in 0.9.0). herdr-nix is the official packaging of herdr's
     # prebuilt release binary as a Nix derivation, with a Cachix cache
-    # behind it. Used by `home.nix` (see the `herdr` let-binding there);
-    # can be dropped once the upstream `update-herdr` bot bumps past 0.9.0
-    # and our local override becomes unnecessary.
+    # behind it. Used by `home.nix` (see the `herdr` let-binding there).
+    # Upstream's `update-herdr` bot bumps stable releases; pick them up
+    # with `nix flake update herdr-nix`.
     herdr-nix.url = "github:herdrdev/herdr-nix";
   };
 
