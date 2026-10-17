@@ -191,6 +191,20 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 17/10/2026, bumped `pi-coding-agent` from `1.0.0` to `1.3.0` (latest
+  stable) in `installPiCodingAgent` in `nix/home.nix`. The version is
+  hardcoded on purpose (an auto-resolving `releases/latest` would make
+  rebuilds non-reproducible), so it stays a manual edit-then-rebuild bump.
+  Installed by hand into `~/.local/share/pi-coding-agent/1.3.0` and
+  relinked `~/.local/bin/pi` because `./rebuild_nix.sh` needs sudo; the next
+  rebuild re-runs the same download as a no-op. Upstream notes: 1.1.0 adds
+  OSC 7501 program-status reporting and `--tools +name/-name`; 1.2.0 adds
+  `PI_CLIPBOARD_OSC52=1`, published `$schema`s for settings/models/themes,
+  and makes `before_agent_start` fire for `sendMessage(..., { triggerTurn })`
+  runs (session now counts as busy while a run starts, which the local
+  `herdr-agent-state.ts` extension reads via `ctx.isIdle()`); 1.3.0 adds
+  `sessionShareDestination` and drops other models' thinking blocks on model
+  switch.
 - By 15/10/2026, silenced the rebuild warnings. The "Nixpkgs 26.05 will be
   the last release to support x86_64-darwin" warning is acknowledged via
   `nixpkgs.config.allowDeprecatedx86_64Darwin = true`, plus

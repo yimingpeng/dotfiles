@@ -89,10 +89,10 @@ in
   '';
 
   home.activation.installPiCodingAgent = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    PI_DIR="$HOME/.local/share/pi-coding-agent/1.0.0"
+    PI_DIR="$HOME/.local/share/pi-coding-agent/1.3.0"
     $DRY_RUN_CMD mkdir -p "$PI_DIR" \
       && ${pkgs.curl}/bin/curl -fsSL \
-        "https://github.com/earendil-works/pi/releases/download/v1.0.0/pi-darwin-x64.tar.gz" \
+        "https://github.com/earendil-works/pi/releases/download/v1.3.0/pi-darwin-x64.tar.gz" \
         | ${pkgs.gnutar}/bin/tar --use-compress-program=${pkgs.gzip}/bin/gzip -x -C "$PI_DIR" \
       && ${pkgs.coreutils}/bin/ln -sfn "$PI_DIR/pi/pi" "$HOME/.local/bin/pi" \
       && ${pkgs.coreutils}/bin/chmod +x "$PI_DIR/pi/pi" \
