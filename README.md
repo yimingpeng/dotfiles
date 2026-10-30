@@ -136,6 +136,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `claude-code@latest` | Claude Code CLI (tracks Homebrew's "latest" channel, not "stable", so it stays current) | `agents/`, `home.nix` aliases |
 | `telegram` | Telegram messenger (official native macOS client, not the cross-platform `telegram-desktop` Qt build) | n/a - app-managed |
 | `orbstack` | Container runtime (Docker Desktop replacement; bundles `docker`, `docker compose`, `buildx`). Free for personal use, paid license required for commercial/work use | `~/.orbstack/bin/` on PATH via `nix/home.nix` |
+| `arc` | Arc browser - being retired upstream (stops opening 22/12/2026), kept installed until the Ardia migration is done | n/a - app-managed |
+| `mantrakp04/tap/ardia` | Ardia browser (Arc's sidebar + Dia's polish on Chromium, open source). Not in `homebrew/cask`, so it comes from the `mantrakp04/tap` tap declared in `configuration.nix` | n/a - app-managed |
 
 ### Homebrew brews (CLI)
 
@@ -367,3 +369,14 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `--no-update-notifier` drops the "New major version of npm available"
   notice. The "Activating installFreebuff" line in `home-manager`'s output
   went away with the hook itself.
+- By 30/10/2026, added the Ardia browser (`mantrakp04/tap/ardia`) to
+  `nix/configuration.nix` alongside `arc`, so both are installed during the
+  migration - `arc` stays until the move is known-good, then it can be
+  dropped from the `casks` list. Ardia isn't in `homebrew/cask`
+  (`brew install mantrakp04/tap/ardia` taps a third-party repo), so a
+  `taps` entry with `trusted = true` was added too: Homebrew 6+ refuses to
+  load casks from untrusted non-official taps during activation, and
+  `onActivation.cleanup = "zap"` would otherwise untap it on the next
+  rebuild. Migration itself is manual: Ardia > Import from Another
+  Browser > Arc brings spaces, pinned tabs, favorites, bookmarks, history,
+  passwords and cookies over.

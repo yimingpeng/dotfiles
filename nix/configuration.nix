@@ -48,6 +48,11 @@
     onActivation.autoUpdate = true; # refresh brew's package index (does not upgrade installed packages)
     onActivation.upgrade = true; # actually upgrade outdated brews/casks on every activation
     onActivation.extraFlags = [ "--force" ];
+    # Third-party taps. `trusted = true` because Homebrew 6+ refuses to load
+    # casks from non-official taps that haven't been trusted during activation.
+    taps = [
+      { name = "mantrakp04/tap"; trusted = true; } # Ardia (Arc alternative)
+    ];
     brews = [
       "zoxide"
       "herdr"
@@ -71,7 +76,8 @@
       "visual-studio-code"
       "betterdisplay"
       "hiddenbar"
-      "arc"
+      "arc"                # being retired (Arc stops opening 22/12/2026); kept until the Ardia migration is done
+      { name = "mantrakp04/tap/ardia"; } # Arc's sidebar + Dia's polish on Chromium; not in homebrew/cask, comes from the mantrakp04 tap
       "sublime-text"
       "rectangle"
       "bitwarden"
