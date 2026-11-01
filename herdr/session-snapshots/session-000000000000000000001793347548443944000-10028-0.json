@@ -1,0 +1,538 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "id": "w1A",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/yimingpeng.github.io",
+      "public_pane_numbers": {
+        "1": 3
+      },
+      "next_public_pane_number": 4,
+      "public_tab_numbers": [
+        2
+      ],
+      "next_public_tab_number": 3,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 1
+          },
+          "panes": {
+            "1": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/yimingpeng.github.io"
+            }
+          },
+          "zoomed": false,
+          "focused": 1,
+          "root_pane": 1
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1B",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/.ssh",
+      "public_pane_numbers": {
+        "3": 11,
+        "2": 6
+      },
+      "next_public_pane_number": 12,
+      "public_tab_numbers": [
+        6,
+        11
+      ],
+      "next_public_tab_number": 12,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 2
+          },
+          "panes": {
+            "2": {
+              "cwd": "/Users/yimingpeng/.ssh"
+            }
+          },
+          "zoomed": false,
+          "focused": 2,
+          "root_pane": 2
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 3
+          },
+          "panes": {
+            "3": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/dotfiles"
+            }
+          },
+          "zoomed": false,
+          "focused": 3,
+          "root_pane": 3
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1D",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/k3s-homelab",
+      "public_pane_numbers": {
+        "4": 2
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 4
+          },
+          "panes": {
+            "4": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/k3s-homelab"
+            }
+          },
+          "zoomed": false,
+          "focused": 4,
+          "root_pane": 4
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w1S",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.08.30 - Work - symbolic policy distillation for autonomous data quality checks",
+      "public_pane_numbers": {
+        "6": 2,
+        "7": 3,
+        "5": 1
+      },
+      "next_public_pane_number": 4,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 5
+          },
+          "panes": {
+            "5": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.08.30 - Work - symbolic policy distillation for autonomous data quality checks"
+            }
+          },
+          "zoomed": false,
+          "focused": 5,
+          "root_pane": 5
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 6
+          },
+          "panes": {
+            "6": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.09.15 - Work - IEEE Young Professional Talk"
+            }
+          },
+          "zoomed": false,
+          "focused": 6,
+          "root_pane": 6
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 7
+          },
+          "panes": {
+            "7": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.10.13 - Life - Mortgage Refix"
+            }
+          },
+          "zoomed": false,
+          "focused": 7,
+          "root_pane": 7
+        }
+      ],
+      "active_tab": 1
+    },
+    {
+      "id": "w10",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.09.11 - Learn - KCNA Exam Prepration",
+      "public_pane_numbers": {
+        "8": 3
+      },
+      "next_public_pane_number": 4,
+      "public_tab_numbers": [
+        3
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 8
+          },
+          "panes": {
+            "8": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.09.11 - Learn - KCNA Exam Prepration"
+            }
+          },
+          "zoomed": false,
+          "focused": 8,
+          "root_pane": 8
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w2V",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/My Drive (yimingpengjojo@gmail.com)/My_Notes",
+      "public_pane_numbers": {
+        "9": 2
+      },
+      "next_public_pane_number": 4,
+      "public_tab_numbers": [
+        2
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 9
+          },
+          "panes": {
+            "9": {
+              "cwd": "/Users/yimingpeng/My Drive (yimingpengjojo@gmail.com)/My_Notes"
+            }
+          },
+          "zoomed": false,
+          "focused": 9,
+          "root_pane": 9
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w2W",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/firstmate",
+      "public_pane_numbers": {
+        "10": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 3,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 10
+          },
+          "panes": {
+            "10": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/firstmate"
+            }
+          },
+          "zoomed": false,
+          "focused": 10,
+          "root_pane": 10
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w4H",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/jarvis",
+      "public_pane_numbers": {
+        "12": 2,
+        "11": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1,
+        2
+      ],
+      "next_public_tab_number": 3,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 11
+          },
+          "panes": {
+            "11": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/jarvis"
+            }
+          },
+          "zoomed": false,
+          "focused": 11,
+          "root_pane": 11
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 12
+          },
+          "panes": {
+            "12": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/jarvis"
+            }
+          },
+          "zoomed": false,
+          "focused": 12,
+          "root_pane": 12
+        }
+      ],
+      "active_tab": 1
+    },
+    {
+      "id": "w4J",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.10.28 - Work - Airflow Meetup",
+      "public_pane_numbers": {
+        "14": 2,
+        "13": 1
+      },
+      "next_public_pane_number": 3,
+      "public_tab_numbers": [
+        1,
+        2
+      ],
+      "next_public_tab_number": 3,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 13
+          },
+          "panes": {
+            "13": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.10.28 - Work - Airflow Meetup"
+            }
+          },
+          "zoomed": false,
+          "focused": 13,
+          "root_pane": 13
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 14
+          },
+          "panes": {
+            "14": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.09.15 - Work - IEEE Young Professional Talk"
+            }
+          },
+          "zoomed": false,
+          "focused": 14,
+          "root_pane": 14
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w4K",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/pCloud/01 - Projects",
+      "public_pane_numbers": {
+        "15": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 15
+          },
+          "panes": {
+            "15": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects"
+            }
+          },
+          "zoomed": false,
+          "focused": 15,
+          "root_pane": 15
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w4M",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/dotfiles",
+      "public_pane_numbers": {
+        "16": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 16
+          },
+          "panes": {
+            "16": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/dotfiles"
+            }
+          },
+          "zoomed": false,
+          "focused": 16,
+          "root_pane": 16
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w4N",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/Documents/My_Code/extralot",
+      "public_pane_numbers": {
+        "19": 3,
+        "17": 1,
+        "21": 6,
+        "20": 5,
+        "18": 2
+      },
+      "next_public_pane_number": 7,
+      "public_tab_numbers": [
+        1,
+        2,
+        3
+      ],
+      "next_public_tab_number": 4,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 17
+          },
+          "panes": {
+            "17": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/extralot"
+            }
+          },
+          "zoomed": false,
+          "focused": 17,
+          "root_pane": 17
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Split": {
+              "direction": "Vertical",
+              "ratio": 0.5,
+              "first": {
+                "Pane": 18
+              },
+              "second": {
+                "Split": {
+                  "direction": "Horizontal",
+                  "ratio": 0.5,
+                  "first": {
+                    "Pane": 19
+                  },
+                  "second": {
+                    "Pane": 20
+                  }
+                }
+              }
+            }
+          },
+          "panes": {
+            "20": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/extralot/extralot-dq-port/local-runner"
+            },
+            "19": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/extralot/extralot-dq-port"
+            },
+            "18": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/extralot"
+            }
+          },
+          "zoomed": false,
+          "focused": 18,
+          "root_pane": 18
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 21
+          },
+          "panes": {
+            "21": {
+              "cwd": "/Users/yimingpeng/Documents/My_Code/extralot/extralot-dq-v1"
+            }
+          },
+          "zoomed": false,
+          "focused": 21,
+          "root_pane": 21
+        }
+      ],
+      "active_tab": 2
+    },
+    {
+      "id": "w4P",
+      "custom_name": null,
+      "identity_cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.10.28 - Work - Airflow Meetup",
+      "public_pane_numbers": {
+        "22": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 22
+          },
+          "panes": {
+            "22": {
+              "cwd": "/Users/yimingpeng/pCloud/01 - Projects/2026.10.28 - Work - Airflow Meetup"
+            }
+          },
+          "zoomed": false,
+          "focused": 22,
+          "root_pane": 22
+        }
+      ],
+      "active_tab": 0
+    }
+  ],
+  "active": 10,
+  "selected": 10,
+  "sidebar_width": null,
+  "sidebar_section_split": null,
+  "collapsed_space_keys": []
+}
