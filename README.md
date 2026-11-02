@@ -136,7 +136,6 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `claude-code@latest` | Claude Code CLI (tracks Homebrew's "latest" channel, not "stable", so it stays current) | `agents/`, `home.nix` aliases |
 | `telegram` | Telegram messenger (official native macOS client, not the cross-platform `telegram-desktop` Qt build) | n/a - app-managed |
 | `orbstack` | Container runtime (Docker Desktop replacement; bundles `docker`, `docker compose`, `buildx`). Free for personal use, paid license required for commercial/work use | `~/.orbstack/bin/` on PATH via `nix/home.nix` |
-| `arc` | Arc browser - being retired upstream (stops opening 22/12/2026), kept installed until the Ardia migration is done | n/a - app-managed |
 | `mantrakp04/tap/ardia` | Ardia browser (Arc's sidebar + Dia's polish on Chromium, open source). Not in `homebrew/cask`, so it comes from the `mantrakp04/tap` tap declared in `configuration.nix` | n/a - app-managed |
 
 ### Homebrew brews (CLI)
@@ -380,3 +379,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   rebuild. Migration itself is manual: Ardia > Import from Another
   Browser > Arc brings spaces, pinned tabs, favorites, bookmarks, history,
   passwords and cookies over.
+- By 02/11/2026, removed `arc` from the `casks` list in
+  `nix/configuration.nix`, now that the move to Ardia is done. Because of
+  `onActivation.cleanup = "zap"`, the next rebuild uninstalls Arc and deletes
+  its leftover data.

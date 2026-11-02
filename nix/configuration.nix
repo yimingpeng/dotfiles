@@ -76,7 +76,6 @@
       "visual-studio-code"
       "betterdisplay"
       "hiddenbar"
-      "arc"                # being retired (Arc stops opening 22/12/2026); kept until the Ardia migration is done
       { name = "mantrakp04/tap/ardia"; } # Arc's sidebar + Dia's polish on Chromium; not in homebrew/cask, comes from the mantrakp04 tap
       "sublime-text"
       "rectangle"
