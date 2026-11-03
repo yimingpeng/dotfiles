@@ -99,6 +99,16 @@ in
       || echo "pi-coding-agent install failed, continuing"
   '';
 
+  # Default browser (Google Chrome, cask in configuration.nix). duti sets the
+  # same handlers System Settings does. Non-fatal: LaunchServices only knows
+  # Chrome after the cask is installed, so a first switch can miss it.
+  home.activation.setDefaultBrowser = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    for handler in http https public.html public.xhtml; do
+      $DRY_RUN_CMD ${pkgs.duti}/bin/duti -s com.google.Chrome "$handler" all \
+        || echo "setting default browser for $handler failed, continuing"
+    done
+  '';
+
   # config the zsh
   programs.zsh = {
     enable = true;

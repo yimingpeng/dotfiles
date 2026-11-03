@@ -76,7 +76,7 @@ with lib;
       "claude-code@latest" # tracks Homebrew's "latest" release channel (vs "stable" for plain claude-code)
       "docker-desktop"
       "alfred"
-      "arc"
+      "google-chrome"
       "betterdisplay"
       "rectangle"
       "sublime-text"

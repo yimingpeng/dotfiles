@@ -124,7 +124,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 | `docker-desktop` | Container runtime + GUI | |
 | `orbstack` | Lightweight Docker/VM runtime | |
 | `alfred` | Launcher / Spotlight replacement | |
-| `arc` | Web browser | |
+| `google-chrome` | Web browser, set as the default via `duti` in `nix/home.nix` | |
 | `betterdisplay` | Display/resolution management | |
 | `rectangle` | Window tiling/management | |
 | `sublime-text` | Text editor | |
@@ -191,6 +191,14 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 03/11/2026, replaced the `arc` cask with `google-chrome` and made Chrome
+  the default browser. A `setDefaultBrowser` activation hook in
+  `nix/home.nix` runs `duti` for `http`, `https`, `public.html` and
+  `public.xhtml`. Ardia was the first pick, but its Homebrew cask is
+  `depends_on arch: :arm64` and this iMac is x86_64, so it can't install
+  here. Heads-up: `cleanup = "zap"` deletes Arc's data on the next rebuild
+  (`~/Library/Application Support/Arc`, caches, prefs), so export anything
+  you need from Arc first.
 - By 17/10/2026, bumped `pi-coding-agent` from `1.0.0` to `1.3.0` (latest
   stable) in `installPiCodingAgent` in `nix/home.nix`. The version is
   hardcoded on purpose (an auto-resolving `releases/latest` would make
