@@ -91,3 +91,6 @@ herdr/.plugins.lock
 herdr/session.json
 .claude/
 agents/skills/synced/
+
+# Herdr session snapshots
+herdr/session-snapshots/

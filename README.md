@@ -383,3 +383,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `nix/configuration.nix`, now that the move to Ardia is done. Because of
   `onActivation.cleanup = "zap"`, the next rebuild uninstalls Arc and deletes
   its leftover data.
+- By 03/11/2026, added `herdr/session-snapshots/` to `.gitignore`. Those
+  snapshot files are local session state, not config, so they are no longer
+  meant for git, so they were also removed from the index
+  (`git rm -r --cached herdr/session-snapshots`). The local files are kept.
