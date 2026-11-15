@@ -25,12 +25,18 @@ in
     uv          # python package manager; `uv tool install` puts tools in ~/.local/bin
     rclone      # CLI sync/upload to cloud storage (used for pCloud instead of the memory-hungry pCloud app)
     timg        # terminal image/video viewer
+    rustup      # Rust toolchain manager; run `rustup default stable` once (adds rustc, cargo, clippy, rustfmt, rust-analyzer)
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
+  # Claude Code's shell snapshot keeps zoxide's `cd` function but drops the
+  # chpwd_functions hook array, so zoxide's doctor false-positives on every
+  # `cd` there and the warning makes the Bash tool report exit code 1.
+  home.sessionVariables._ZO_DOCTOR = "0";
   home.sessionVariables.NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
   home.sessionPath = [
     "${config.home.homeDirectory}/.npm-global/bin"
+    "${config.home.homeDirectory}/.cargo/bin" # `cargo install` binaries
     # OrbStack CLI shims (docker, docker-buildx, docker-compose, kubectl).
     # Created by the orbstack Homebrew cask on first launch; symlinks live
     # here so the OrbStack-built tools shadow Docker Desktop's /usr/local/bin/docker.

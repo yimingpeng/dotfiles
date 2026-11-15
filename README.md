@@ -387,3 +387,13 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   snapshot files are local session state, not config, so they are no longer
   meant for git, so they were also removed from the index
   (`git rm -r --cached herdr/session-snapshots`). The local files are kept.
+- By 14/11/2026, added `rustup` to `home.packages` in `nix/home.nix` and
+  `~/.cargo/bin` to `home.sessionPath`, for Rust development. The toolchain
+  itself is managed by rustup (not Nix), so per-project `rust-toolchain.toml`
+  files work. After a rebuild, run `rustup default stable` once.
+- By 16/11/2026, set `_ZO_DOCTOR=0` via `home.sessionVariables` in
+  `nix/home.nix`. Claude Code's shell snapshot keeps zoxide's `cd` function
+  but drops the `chpwd_functions` hook, so zoxide's doctor warned on every
+  `cd` and made the Bash tool report exit code 1. Zsh init order was already
+  correct (zoxide is last in `.zshrc`). Takes effect after a rebuild and a
+  new Claude Code session.
