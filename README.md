@@ -417,3 +417,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `:Lazy sync` (now v3.16.10). In `nvim/lua/plugins/obsidian.lua`, replaced
   `preferred_link_style` with `link.style` and dropped `completion.nvim_cmp`
   (completion is now the built-in LSP server) to silence deprecation warnings.
+- By 25/11/2026, removed LazyVim's `<A-j>`/`<A-k>` line-move mappings in
+  `nvim/lua/config/keymaps.lua`. Typing `<Esc>` then `j`/`k` fast arrives as
+  Alt+j/k in the terminal and moved lines unintentionally. Needs a
+  home-manager switch to reach `~/.config/nvim`.

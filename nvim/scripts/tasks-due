@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# tasks-due [YYYY-MM-DD]
+# Open checkbox tasks whose due (📅) or scheduled (⏳) date is on/before DAY (default today).
+# Replaces your Dataview/Tasks "due today + overdue" view.
+# Output is `file:line:col:text` (rg --vimgrep style) sorted by date, so Neovim can load it into quickfix.
+set -euo pipefail
+VAULT="${VAULT:-$HOME/vault}"
+DAY="${1:-$(date +%F)}"
+
+rg --vimgrep --no-heading --glob '*.md' --glob '!_templates/**' --glob '!**/Templates/**' \
+   -e '^\s*- \[ \] .*(📅|⏳) ?[0-9]{4}-[0-9]{2}-[0-9]{2}' "$VAULT" |
+awk -v day="$DAY" '
+  function firstdate(s,   p, r) {            # first date right after the emoji
+    p = index(s, "📅"); if (p == 0) p = index(s, "⏳")
+    r = substr(s, p)
+    if (match(r, /[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/)) return substr(r, RSTART, 10)
+    return ""
+  }
+  { d = firstdate($0); if (d != "" && d <= day) print d "\t" $0 }
+' | sort | cut -f2-

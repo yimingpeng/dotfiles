@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# timeblocks [note.md ...]
+# Sums time per [[link]] from lines like:   - 09:00-10:30 [[Project X]] what I did
+# Default input: today's daily note. Pass several files for a week:
+#   timeblocks "$VAULT"/"000 - Daily Notes"/2026-11-2*.md
+set -euo pipefail
+VAULT="${VAULT:-$HOME/vault}"
+DAYS="${DAILY_DIR:-000 - Daily Notes}"
+if [ $# -eq 0 ]; then set -- "$VAULT/$DAYS/$(date +%F).md"; fi
+
+awk '
+  match($0, /[0-9][0-9]?:[0-9][0-9] ?- ?[0-9][0-9]?:[0-9][0-9]/) {
+    span = substr($0, RSTART, RLENGTH)
+    rest = substr($0, RSTART + RLENGTH)
+    split(span, p, / ?- ?/); split(p[1], a, ":"); split(p[2], b, ":")
+    m = (b[1] * 60 + b[2]) - (a[1] * 60 + a[2])
+    if (m <= 0) next                                   # ignore bad/overnight spans
+    tag = "(no link)"
+    if (match(rest, /\[\[[^]|#]+/)) tag = substr(rest, RSTART + 2, RLENGTH - 2)
+    tot[tag] += m; all += m
+  }
+  END {
+    for (t in tot) printf "%6.2f h  %s\n", tot[t] / 60, t | "sort -rn"
+    close("sort -rn")
+    if (all > 0) printf "%6.2f h  TOTAL\n", all / 60
+  }
+' "$@"

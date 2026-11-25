@@ -2,8 +2,8 @@
 -- Test bench for the work-laptop config in the course folder (same keys, different vault path).
 -- Previous version (epwalsh/obsidian.nvim) is in git history: `git checkout -- nvim/lua/plugins/obsidian.lua`
 local vault = vim.fn.expand("~/My Drive (yimingpengjojo@gmail.com)/My_Notes")
--- Scripts are used straight from the course folder, so nothing needs installing in ~/.local/bin.
-local bin = vim.fn.expand("~/pCloud/01 - Projects/2026.11.30 - Learn - Master neovim with obsidian workflow/scripts")
+-- Scripts live in this config (nvim/scripts/), so they travel with the dotfiles repo.
+local bin = vim.fn.stdpath("config") .. "/scripts"
 
 -- Run one of my scripts and load its `file:line:col:text` output into quickfix.
 local function qf(script, ...)
@@ -84,6 +84,18 @@ local obsidian = {
       end,
       desc = "Copy note path (Outlook)",
     },
+    -- Index notes: replaces the Dataview TASK query inside notes like "I - Index - General Logs"
+    {
+      "<leader>oI",
+      function()
+        qf("index-tasks", vim.fn.expand("%:p"))
+      end,
+      desc = "Index: tasks that link here -> quickfix",
+    },
+    -- QuickAdd replacements: log into the current note's section (see lua/quickadd.lua)
+    { "<leader>ocw", function() require("quickadd").worklog() end, desc = "Capture: work log" },
+    { "<leader>ocm", function() require("quickadd").meetlog() end, desc = "Capture: meeting log" },
+    { "<leader>ocl", function() require("quickadd").literaturelog() end, desc = "Capture: literature log" },
   },
   ---@module 'obsidian'
   ---@type obsidian.config
@@ -124,5 +136,8 @@ local obsidian = {
 return {
   obsidian,
   -- which-key label so <leader>o shows as "obsidian"
-  { "folke/which-key.nvim", opts = { spec = { { "<leader>o", group = "obsidian" } } } },
+  {
+    "folke/which-key.nvim",
+    opts = { spec = { { "<leader>o", group = "obsidian" }, { "<leader>oc", group = "capture" } } },
+  },
 }

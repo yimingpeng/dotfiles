@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# timeblocks-ics note.md > day.ics
+# Turns time-block lines (`- 09:00-10:30 [[Project X]] text`) into an iCalendar file you can
+# import into Outlook (File > Open & Export > Import/Export, or double-click the .ics).
+# The date comes from the note's filename (YYYY-MM-DD.md). Times are "floating" (local time).
+# Each event's description carries the note path so you can find it again.
+set -euo pipefail
+F="${1:?usage: timeblocks-ics 2026-11-25.md > day.ics}"
+DAY="$(basename "$F" .md)"
+case "$DAY" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "filename must be YYYY-MM-DD.md" >&2; exit 1;; esac
+STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
+FULL="$(cd "$(dirname "$F")" && pwd)/$(basename "$F")"
+
+awk -v day="$DAY" -v stamp="$STAMP" -v path="$FULL" '
+  function hhmm(s,   x) { split(s, x, ":"); return sprintf("%02d%02d00", x[1], x[2]) }
+  BEGIN { d = day; gsub("-", "", d); printf "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//timeblocks//EN\r\n" }
+  match($0, /[0-9][0-9]?:[0-9][0-9] ?- ?[0-9][0-9]?:[0-9][0-9]/) {
+    span = substr($0, RSTART, RLENGTH); rest = substr($0, RSTART + RLENGTH)
+    split(span, p, / ?- ?/)
+    s = rest; gsub(/\[\[|\]\]/, "", s); sub(/^[ \t]+/, "", s); if (s == "") s = "Time block"
+    n++
+    printf "BEGIN:VEVENT\r\nUID:%s-%s-%d@timeblocks\r\nDTSTAMP:%s\r\n", d, hhmm(p[1]), n, stamp
+    printf "DTSTART:%sT%s\r\nDTEND:%sT%s\r\nSUMMARY:%s\r\nDESCRIPTION:Note: %s\r\nEND:VEVENT\r\n", d, hhmm(p[1]), d, hhmm(p[2]), s, path
+  }
+  END { printf "END:VCALENDAR\r\n" }
+' "$F"
