@@ -62,6 +62,10 @@ in
     initContent = lib.mkMerge [
       ''
         bindkey '^f' autosuggest-accept
+        # Also export here: hm-session-vars.sh is skipped when a stale parent
+        # env already has __HM_SESS_VARS_SOURCED=1, so sessionVariables alone
+        # can miss newly added vars until a full re-login.
+        export _ZO_DOCTOR=0
       ''
       # zoxide's enableZshIntegration doesn't control where its init line
       # lands in .zshrc - home-manager splices it in at a fixed position

@@ -401,3 +401,8 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `ardia` cask in `nix/configuration.nix` and removed the `taps` entry. Ardia
   is now in `homebrew/cask` (the old tap moved to `ardia-browser/homebrew-tap`),
   so no third-party tap is needed.
+- By 18/11/2026, also `export _ZO_DOCTOR=0` in `programs.zsh.initContent`
+  (`nix/home.nix`). The `sessionVariables` entry never reached Claude Code
+  because `hm-session-vars.sh` is skipped when a stale parent env already has
+  `__HM_SESS_VARS_SOURCED=1`. Run `darwin-rebuild switch` (`rebuild_nix.sh`),
+  then start a new Claude Code session.
