@@ -117,10 +117,7 @@ local obsidian = {
     -- (from the lang.markdown extra) is the single renderer, avoiding double styling.
     ui = { enable = false },
 
-    -- Your setup uses nvim-cmp (see plugins/nvim-cmp.lua), so keep this.
-    completion = { nvim_cmp = true, min_chars = 2 },
-
-    preferred_link_style = "wiki",
+    link = { style = "wiki" },
   },
 }
 

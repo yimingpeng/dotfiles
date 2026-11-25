@@ -410,3 +410,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   (`nvim/lua/plugins/markdown.lua`): removed `markdownlint-cli2` from the
   nvim-lint and conform markdown lists. The Obsidian vault produced ~200k
   style warnings. `marksman`, `prettier` and `markdown-toc` are unchanged.
+- By 25/11/2026, fixed `E464: Ambiguous use of user-defined command` on
+  `<leader>o*` in `nvim`: the installed plugin was still `epwalsh/obsidian.nvim`
+  v3.9.0 (legacy `ObsidianXxx` commands) while the config targets the
+  `obsidian-nvim` fork's `:Obsidian <sub>`. Removed the old checkout and ran
+  `:Lazy sync` (now v3.16.10). In `nvim/lua/plugins/obsidian.lua`, replaced
+  `preferred_link_style` with `link.style` and dropped `completion.nvim_cmp`
+  (completion is now the built-in LSP server) to silence deprecation warnings.
