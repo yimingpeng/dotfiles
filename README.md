@@ -406,3 +406,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   because `hm-session-vars.sh` is skipped when a stale parent env already has
   `__HM_SESS_VARS_SOURCED=1`. Run `darwin-rebuild switch` (`rebuild_nix.sh`),
   then start a new Claude Code session.
+- By 25/11/2026, disabled markdownlint in the `nvim` config
+  (`nvim/lua/plugins/markdown.lua`): removed `markdownlint-cli2` from the
+  nvim-lint and conform markdown lists. The Obsidian vault produced ~200k
+  style warnings. `marksman`, `prettier` and `markdown-toc` are unchanged.
