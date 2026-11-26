@@ -427,3 +427,6 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   rebuild if it's missing, and sets `VAULT` to the Google Drive notes folder
   (`obsidian.lua` reads it, falling back to `~/My_Notes`). `lazy-lock.json` is
   now committed in that repo instead of ignored here.
+- By 26/11/2026, also export `VAULT` from `.zshrc` (like `_ZO_DOCTOR`): panes
+  from a long-running `herdr` server inherit `__HM_SESS_VARS_SOURCED=1`, so
+  `hm-session-vars.sh` was skipped and nvim fell back to `~/My_Notes`.
