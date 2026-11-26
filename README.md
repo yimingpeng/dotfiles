@@ -6,11 +6,10 @@ The repo contains all my dotfiles
 
 - `wezterm`: This folder contains the configs for my `wezterm`
 - `iterm2`: This folder contains my default `iterm2` profile
-- `nvim`: My `nvim` config, LazyVim-based - catppuccin colorscheme, `obsidian.nvim`
-  wired to my personal notes vault, telescope tweaks (horizontal layout,
-  `<leader>fp` for plugin files), `cmp-emoji` completion, and LSPs for
-  nix/python/typescript/markdown (`nil_ls` comes from home-manager, not
-  Mason); over SSH, yanks go to the local clipboard via OSC 52
+- `nvim`: no longer here - the Neovim config lives in its own private repo
+  `yimingpeng/nvim-config`, cloned to `/Volumes/MainDataDrive/My_Code/nvim-config`
+  (next to this repo) and linked to `~/.config/nvim` by `home.nix`. `home.nix`
+  sets `VAULT` (the notes folder) for it
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is
   suitable for my filco 68 keyboard
 - `starship.toml`: This is for configuring the look-and-feel for the prompt
@@ -100,7 +99,7 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 - `nix/`: Declarative macOS system config — `flake.nix` (inputs: nixpkgs,
   nix-darwin, nix-homebrew, home-manager), `configuration.nix` (system defaults,
   Homebrew casks, Tailscale, LAN/tailnet/2401:7000::/32-only SSH), and `home.nix`
-  (packages, zsh/starship/git/zoxide setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
+  (packages, zsh/starship/git/zoxide setup, and symlinks for `wezterm`, `starship.toml`, `nvim` (to the `nvim-config` clone), `herdr`, and
   `.claude/settings.json` into place)
 - `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles`, runs
   `darwin-rebuild switch` to apply the config, then `brew upgrade` to
@@ -137,7 +136,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 | Tool | Purpose |
 | --- | --- |
-| `neovim` | Editor (LazyVim-based, see `nvim/`) |
+| `neovim` | Editor (LazyVim-based, config in the `nvim-config` repo) |
 | `lazygit` | Terminal git UI |
 | `ripgrep` | Fast search |
 | `fd` | Fast find |
@@ -191,6 +190,14 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 26/11/2026, moved the `nvim` config out to its own private repo
+  `nvim-config` (history kept), so every machine shares one Neovim config
+  while dotfiles branches keep their per-machine differences. The iMac-only
+  OSC 52 clipboard block was ported into `nvim-config`. `home.nix` links
+  `~/.config/nvim` to `/Volumes/MainDataDrive/My_Code/nvim-config`, clones it
+  there on rebuild if it's missing, and sets `VAULT` to the Google Drive notes
+  folder (`obsidian.lua` reads it, falling back to `~/My_Notes`).
+  `lazy-lock.json` is now committed in that repo instead of ignored here.
 - By 18/11/2026, allowed SSH password login from the IPv6 prefix
   `2401:7000::/32` too (added to both `AllowUsers` and the `Match Address`
   in `services.openssh`, `nix/configuration.nix`). Not yet applied: needs
@@ -267,7 +274,7 @@ build on this Intel Mac.
   are now untracked, files kept locally) and `agents/skills/.trash/` (the
   skills tool's deleted-skill trash).
 - By 15/10/2026, `nvim` copies to the local clipboard over SSH via OSC 52
-  (`nvim/lua/config/options.lua`, only when `SSH_TTY` is set). Paste reads
+  (`lua/config/options.lua` in `nvim-config`, only when `SSH_TTY` is set). Paste reads
   the unnamed register because OSC 52 paste queries hang in most terminals;
   inside tmux it needs `set -g set-clipboard on`.
 - By 13/10/2026, updated `herdr` from 0.9.0 to 0.9.3 (latest stable).

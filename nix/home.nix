@@ -2,6 +2,7 @@
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
+  nvimConfig = "/Volumes/MainDataDrive/My_Code/nvim-config";
 
   # herdr has no x86_64-darwin Homebrew bottle (Tier 3 dropped it in 0.9.0;
   # a source build needs rust + zig). The official `herdrdev/herdr-nix` repo's
@@ -45,6 +46,8 @@ in
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
+  # Obsidian vault for nvim-config's obsidian.lua and task scripts.
+  home.sessionVariables.VAULT = "${config.home.homeDirectory}/My Drive (yimingpengjojo@gmail.com)/My_Notes";
   home.sessionVariables.NPM_CONFIG_PREFIX = "${config.home.homeDirectory}/.npm-global";
   # ~/.local/bin holds user-installed binaries from activation hooks below
   # (rtk, pi-coding-agent); prepending it to sessionPath keeps them ahead of
@@ -188,8 +191,16 @@ in
   home.file.".config/starship.toml".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/starship.toml";
 
+  # Neovim config lives in its own private repo, cloned next to dotfiles so it
+  # stays editable (and :Lazy can write lazy-lock.json). Update it with `git pull`.
   home.file.".config/nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
+    config.lib.file.mkOutOfStoreSymlink nvimConfig;
+  home.activation.cloneNvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -d "${nvimConfig}" ]; then
+      run ${pkgs.git}/bin/git clone https://github.com/yimingpeng/nvim-config.git "${nvimConfig}" \
+        || echo "warning: could not clone nvim-config; clone it to ${nvimConfig} manually" >&2
+    fi
+  '';
 
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/herdr";

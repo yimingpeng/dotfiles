@@ -85,7 +85,6 @@ out/
 *.bak
 *.backup
 
-nvim/lazy-lock.json
 .omc/
 herdr/.plugins.lock
 herdr/session.json
