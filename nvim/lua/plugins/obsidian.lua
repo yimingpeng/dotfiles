@@ -45,7 +45,9 @@ local obsidian = {
     { "<leader>ob", obs("backlinks"), desc = "Backlinks to this note" },
     { "<leader>ol", obs("links"), desc = "Links in this note" },
     { "<leader>of", obs("follow_link"), desc = "Follow link under cursor" },
-    { "<leader>ok", obs("toggle_checkbox"), desc = "Toggle checkbox" },
+    -- Two-state tasks matching your Tasks plugin: done = [x] + date, cross = [-]  (see lua/checkbox.lua)
+    { "<leader>ok", function() require("checkbox").done() end, mode = { "n", "x" }, desc = "Task: done (tick + date) / undo" },
+    { "<leader>oK", function() require("checkbox").cross() end, mode = { "n", "x" }, desc = "Task: cross [-] / undo" },
     { "<leader>oa", obs("tags"), desc = "Find by tag" },
     { "<leader>oR", obs("rename"), desc = "Rename note (updates backlinks)" },
     -- my scripts (replace Dataview / Tasks queries)
@@ -128,6 +130,10 @@ local obsidian = {
     -- Disable obsidian.nvim's own conceal rendering so render-markdown.nvim
     -- (from the lang.markdown extra) is the single renderer, avoiding double styling.
     ui = { enable = false },
+
+    -- The plugin's built-in toggle (what Enter on a checkbox uses) cycles " ", "~", "!", ">", "x".
+    -- Limit it to two states so Enter cannot park a task in a status you do not use.
+    checkbox = { order = { " ", "x" } },
 
     link = { style = "wiki" },
   },
