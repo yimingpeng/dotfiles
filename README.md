@@ -6,11 +6,10 @@ The repo contains all my dotfiles
 
 - `wezterm`: This folder contains the configs for my `wezterm`
 - `iterm2`: This folder contains my default `iterm2` profile
-- `nvim`: My `nvim` config, LazyVim-based - catppuccin colorscheme, `obsidian.nvim`
-  wired to my personal notes vault, telescope tweaks (horizontal layout,
-  `<leader>fp` for plugin files), `cmp-emoji` completion, and LSPs for
-  nix/python/typescript/markdown (`nil_ls` comes from home-manager, not
-  Mason)
+- `nvim`: no longer here - the Neovim config lives in its own private repo
+  `yimingpeng/nvim-config`, cloned to `~/Documents/My_Code/nvim-config` (next
+  to this repo) and linked to `~/.config/nvim` by `home.nix`. `home.nix` sets
+  `VAULT` (the notes folder) for it
 - `karabiner`: This folder contains all the configs for my `karabiner`, this is
   suitable for my filco 68 keyboard. Installed as the `karabiner-elements`
   Homebrew cask via `nix/configuration.nix`, and the config is symlinked to
@@ -113,7 +112,7 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 - `nix/`: Declarative macOS system config — `flake.nix` (inputs: nixpkgs,
   nix-darwin, nix-homebrew, home-manager), `configuration.nix` (system defaults,
   homebrew brews/casks), and `home.nix` (packages, zsh/starship/git/zoxide
-  setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
+  setup, and symlinks for `wezterm`, `starship.toml`, `nvim` (to the `nvim-config` clone), `herdr`, and
   `.claude/settings.json` into place)
 - `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles` and runs
   `darwin-rebuild switch` to apply the config
@@ -154,7 +153,7 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
 
 | Tool | Purpose |
 | --- | --- |
-| `neovim` | Editor (LazyVim-based, see `nvim/`) |
+| `neovim` | Editor (LazyVim-based, config in the `nvim-config` repo) |
 | `lazygit` | Terminal git UI |
 | `ripgrep` | Fast search |
 | `fd` | Fast find |
@@ -421,3 +420,10 @@ programs from home-manager's `programs.*` modules in `nix/home.nix`.
   `nvim/lua/config/keymaps.lua`. Typing `<Esc>` then `j`/`k` fast arrives as
   Alt+j/k in the terminal and moved lines unintentionally. Needs a
   home-manager switch to reach `~/.config/nvim`.
+- By 26/11/2026, moved the `nvim` config out to its own private repo
+  `nvim-config` (history kept), so every machine shares one Neovim config
+  while dotfiles branches keep their per-machine differences. `home.nix` links
+  `~/.config/nvim` to `~/Documents/My_Code/nvim-config`, clones it there on
+  rebuild if it's missing, and sets `VAULT` to the Google Drive notes folder
+  (`obsidian.lua` reads it, falling back to `~/My_Notes`). `lazy-lock.json` is
+  now committed in that repo instead of ignored here.

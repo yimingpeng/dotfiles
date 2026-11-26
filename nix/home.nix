@@ -2,6 +2,7 @@
 
 let
   dotfiles = "${config.home.homeDirectory}/.dotfiles";
+  nvimConfig = "${config.home.homeDirectory}/Documents/My_Code/nvim-config";
 in
 
 {
@@ -29,6 +30,8 @@ in
   ];
   fonts.fontconfig.enable = true;
   home.sessionVariables.EDITOR = "nvim";
+  # Obsidian vault for nvim-config's obsidian.lua and task scripts.
+  home.sessionVariables.VAULT = "${config.home.homeDirectory}/My Drive (yimingpengjojo@gmail.com)/My_Notes";
   # Claude Code's shell snapshot keeps zoxide's `cd` function but drops the
   # chpwd_functions hook array, so zoxide's doctor false-positives on every
   # `cd` there and the warning makes the Bash tool report exit code 1.
@@ -121,8 +124,16 @@ in
   home.file.".config/starship.toml".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/starship.toml";
 
+  # Neovim config lives in its own private repo, cloned next to dotfiles so it
+  # stays editable (and :Lazy can write lazy-lock.json). Update it with `git pull`.
   home.file.".config/nvim".source =
-    config.lib.file.mkOutOfStoreSymlink "${dotfiles}/nvim";
+    config.lib.file.mkOutOfStoreSymlink nvimConfig;
+  home.activation.cloneNvimConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -d "${nvimConfig}" ]; then
+      run ${pkgs.git}/bin/git clone https://github.com/yimingpeng/nvim-config.git "${nvimConfig}" \
+        || echo "warning: could not clone nvim-config; clone it to ${nvimConfig} manually" >&2
+    fi
+  '';
 
   home.file.".config/herdr".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfiles}/herdr";
