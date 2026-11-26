@@ -97,15 +97,15 @@ with lib;
   # Remote Login (Apple's sshd), reachable only from the home LAN and the
   # tailnet. sshd listens on every interface and en0 has global IPv6
   # addresses, so AllowUsers is what keeps the open internet out. Keys work
-  # from both; passwords only from the LAN. The `Match` ends at the end of this
+  # from both; passwords only from the LAN and 2401:7000::/32. The `Match` ends at the end of this
   # included file, so it can't swallow later sshd_config.d drop-ins.
   services.openssh = {
     enable = true;
     extraConfig = ''
       PasswordAuthentication no
       KbdInteractiveAuthentication no
-      AllowUsers ${config.system.primaryUser}@192.168.31.0/24 ${config.system.primaryUser}@fe80::/10 ${config.system.primaryUser}@100.64.0.0/10 ${config.system.primaryUser}@fd7a:115c:a1e0::/48
-      Match Address 192.168.31.0/24,fe80::/10
+      AllowUsers ${config.system.primaryUser}@192.168.31.0/24 ${config.system.primaryUser}@fe80::/10 ${config.system.primaryUser}@100.64.0.0/10 ${config.system.primaryUser}@fd7a:115c:a1e0::/48 ${config.system.primaryUser}@2401:7000::/32
+      Match Address 192.168.31.0/24,fe80::/10,2401:7000::/32
         PasswordAuthentication yes
     '';
   };

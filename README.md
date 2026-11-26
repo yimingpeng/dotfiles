@@ -99,7 +99,7 @@ changed, re-copy it into the marked `VENDORED: ponytail` block in
 
 - `nix/`: Declarative macOS system config — `flake.nix` (inputs: nixpkgs,
   nix-darwin, nix-homebrew, home-manager), `configuration.nix` (system defaults,
-  Homebrew casks, Tailscale, LAN/tailnet-only SSH), and `home.nix`
+  Homebrew casks, Tailscale, LAN/tailnet/2401:7000::/32-only SSH), and `home.nix`
   (packages, zsh/starship/git/zoxide setup, and symlinks for `wezterm`, `starship.toml`, `nvim`, `herdr`, and
   `.claude/settings.json` into place)
 - `rebuild_nix.sh`: Symlinks this repo to `~/.dotfiles`, runs
@@ -191,6 +191,16 @@ build on this Intel Mac.
 
 ## Change Logs
 
+- By 18/11/2026, allowed SSH password login from the IPv6 prefix
+  `2401:7000::/32` too (added to both `AllowUsers` and the `Match Address`
+  in `services.openssh`, `nix/configuration.nix`). Not yet applied: needs
+  `./rebuild_nix.sh`.
+- By 10/11/2026, bumped Node.js from 22.23.1 to 22.23.4: Astro refuses to
+  run `npm run dev` on 22.23.1 (needs `>=22.23.4`). `nodejs_22` comes from
+  nixpkgs, so this is `nix flake update nixpkgs` in `nix/`: the lock moved
+  from `329c3d2` (2026-07-26) to `57f1c89` (2026-11-06), the current
+  nixpkgs-26.05-darwin head. That also moves every other nixpkgs package in
+  the lock, not just Node. Needs `./rebuild_nix.sh` to take effect.
 - By 03/11/2026, replaced the `arc` cask with `google-chrome` and made Chrome
   the default browser. A `setDefaultBrowser` activation hook in
   `nix/home.nix` runs `duti` for `http`, `https`, `public.html` and
